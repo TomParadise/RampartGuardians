@@ -1,0 +1,123 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &3636000987544596498
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 14881066703319346, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 885bfc906f343b841a0d7233d244fe34, type: 2}
+    - target: {fileID: 247038445680874640, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 885bfc906f343b841a0d7233d244fe34, type: 2}
+    - target: {fileID: 588160528383541349, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 885bfc906f343b841a0d7233d244fe34, type: 2}
+    - target: {fileID: 1065676020950442666, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 885bfc906f343b841a0d7233d244fe34, type: 2}
+    - target: {fileID: 1964353723729485344, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 885bfc906f343b841a0d7233d244fe34, type: 2}
+    - target: {fileID: 4761767928311374713, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 885bfc906f343b841a0d7233d244fe34, type: 2}
+    - target: {fileID: 5802408141986764902, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 885bfc906f343b841a0d7233d244fe34, type: 2}
+    - target: {fileID: 6029181403458978818, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 885bfc906f343b841a0d7233d244fe34, type: 2}
+    - target: {fileID: 7629404152726619118, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: maxHP
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7629404152726619118, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: damage
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7629404152726619118, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: baseSpeed
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7629404152726619118, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: enemyName
+      value: Elite Rogue
+      objectReference: {fileID: 0}
+    - target: {fileID: 7629404152726619118, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: goldReward
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7629404152726619118, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: portraitSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 9c25b93a1212b614ea19a0b8ad03bcdb, type: 3}
+    - target: {fileID: 7669055364031833937, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 885bfc906f343b841a0d7233d244fe34, type: 2}
+    - target: {fileID: 8060054917396789999, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 885bfc906f343b841a0d7233d244fe34, type: 2}
+    - target: {fileID: 8503557389699812468, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8503557389699812468, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8503557389699812468, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8503557389699812468, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8503557389699812468, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8503557389699812468, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8503557389699812468, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8503557389699812468, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8503557389699812468, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8503557389699812468, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9027857742467225294, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
+      propertyPath: m_Name
+      value: ELITE Rogue
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
