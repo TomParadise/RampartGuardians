@@ -7,11 +7,11 @@ public class Explosion : PooledObject
     [SerializeField] private ParticleSystem[] systemsToScale;
     public void Init(float damage, float range, Tower attackingTower)
     {
-        transform.localScale = Vector3.one * range * 0.3f;
+        transform.localScale = Vector3.one * range * 0.75f;
         for (int i = 0; i < systemsToScale.Length; i++)
         {
             var main = systemsToScale[i].main;
-            main.startSize = range * 2f;
+            main.startSize = range * 2.5f;
         }
         Collider[] cols = Physics.OverlapSphere(transform.position, range, 1 << 7);
 

@@ -39,6 +39,23 @@ public class GoldEarnedPopUp : PooledObject
         pos += transform.right * ((digits.Length + 1) * 0.3f - 0.1f) / 3;
         transform.position = pos;
     }
+    public void InitAsDamage(int damageAmount)
+    {
+        transform.rotation = Quaternion.LookRotation(transform.position - mainCam.transform.position);
+        int[] digits = GetIntArray(damageAmount);
+        int child = 1;
+        for (int i = digits.Length - 1; i >= 0; i--)
+        {
+            GameObject digit = transform.GetChild(child).gameObject;
+            digit.GetComponent<SpriteRenderer>().sprite = textSprites[digits[i]];
+            digit.transform.localPosition = new Vector3(-0.1f - (0.3f * child++), 0, 0);
+            digit.SetActive(true);
+        }
+        transform.GetChild(0).localPosition = new Vector3(-(digits.Length + 1) * 0.3f - 0.1f, 0, 0);
+        Vector3 pos = transform.position;
+        pos += transform.right * ((digits.Length + 1) * 0.3f - 0.1f) / 3;
+        transform.position = pos;
+    }
 
     int[] GetIntArray(int num)
     {
@@ -54,7 +71,7 @@ public class GoldEarnedPopUp : PooledObject
 
     private void Update()
     {
-        //if(GameManager.instance.gameState != GameManager.GameState.Playing) { return; }
+        if(GameManager.instance.gameState == GameManager.GameState.Paused) { return; }
         transform.rotation = Quaternion.LookRotation(transform.position - mainCam.transform.position);
         transform.position += Vector3.up * Time.deltaTime * 0.2f;
         timer += Time.deltaTime;

@@ -43,7 +43,7 @@ public class BurstTower : AttackingTower
             timer = burstTimer * (1 - buffAmount);
             while(timer > 0)
             {
-                while(GameManager.instance.gameState != GameManager.GameState.Playing) { yield return null; }
+                while(GameManager.instance.gameState == GameManager.GameState.Paused) { yield return null; }
 
                 timer -= Time.deltaTime;
                 yield return null;

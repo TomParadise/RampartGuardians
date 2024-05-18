@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class BuffingEnemy : MonoBehaviour
 {
+    [SerializeField] private Enemy attachedEnemy;
+
+    private void OnEnable()
+    {
+        attachedEnemy.BuffSpeed();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         other.GetComponent<Enemy>().BuffSpeed();
@@ -11,6 +18,6 @@ public class BuffingEnemy : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        other.GetComponent<Enemy>().CheckForBuffingAoEs();
+        other.GetComponent<Enemy>().CheckForBuffingAoEs(gameObject);
     }
 }

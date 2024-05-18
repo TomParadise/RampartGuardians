@@ -521,7 +521,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 3d5ab731e057da74fad2998d18e6d4c9, type: 2}
   - {fileID: 2100000, guid: 75e4265d18669ff4e967baa3cc7e5218, type: 2}
   hoverText: {fileID: 8824126523916835752}
-  goldValue: 500
+  goldValue: 550
   buffAmount: 0
   animator: {fileID: 0}
   utilityTile: 1
@@ -534,7 +534,7 @@ MonoBehaviour:
   damageType: Earn +100 gold after every wave
   descriptionInfo: 
   weaponModels: []
-  towerCost: 500
+  towerCost: 550
   baseProjectileCount: 1
   levelUpPanel: {fileID: 0}
   initTargeting: -1

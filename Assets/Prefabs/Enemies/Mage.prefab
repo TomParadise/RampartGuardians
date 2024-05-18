@@ -83,7 +83,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 0.4
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3186175302455530110
 MonoBehaviour:
@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38b5460cb519add4b9fe181255418f03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attachedEnemy: {fileID: 7194320649910655724}
 --- !u!1001 &493683618526604182
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -751,7 +752,7 @@ MonoBehaviour:
   currentHP: 0
   baseSpeed: 0.7
   speed: 0.5
-  goldReward: 25
+  goldReward: 20
   damage: 2
   alive: 1
   walking: 1
@@ -905,6 +906,18 @@ PrefabInstance:
     - target: {fileID: 8673085222892433521, guid: c8283a17ef8a6c241b5b709aaea1a99f, type: 3}
       propertyPath: InitialModule.maxNumParticles
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8844728610448752282, guid: c8283a17ef8a6c241b5b709aaea1a99f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8844728610448752282, guid: c8283a17ef8a6c241b5b709aaea1a99f, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8844728610448752282, guid: c8283a17ef8a6c241b5b709aaea1a99f, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 8844728610448752282, guid: c8283a17ef8a6c241b5b709aaea1a99f, type: 3}
       propertyPath: m_LocalPosition.x

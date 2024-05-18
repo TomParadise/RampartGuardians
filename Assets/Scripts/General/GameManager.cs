@@ -12,6 +12,7 @@ public class GameManager : MonoSingleton<GameManager>
     [SerializeField] private GameObject[] effectPrefabs;
     [SerializeField] private GameObject goldPopUpPrefab;
     [SerializeField] private GameObject damagePopUpPrefab;
+    [SerializeField] private GameObject HPDamagePrefab;
     [SerializeField] private EnemySpawnGroups[] enemySpawnGroups;
     [SerializeField] private EnemySpawnGroups currentSpawnGroup;
     [SerializeField] private Transform enemyHolder;
@@ -25,8 +26,10 @@ public class GameManager : MonoSingleton<GameManager>
     private ObjectPool<PooledObject>[] effectPools;
     private ObjectPool<PooledObject> goldPopUpPool;
     private ObjectPool<PooledObject> damagePopUpPool;
+    private ObjectPool<PooledObject> HPDamagePool;
     private float enemySpawnTimer = 0;
     public GameState gameState;
+    public GameState prevGameState;
     public int stageCount = 0;
     private int enemyCount = 0;
 
@@ -39,6 +42,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     public List<BuffingTower> buffingTowers = new List<BuffingTower>();
     public List<Tower> towers = new List<Tower>();
+    public List<Enemy> enemies = new List<Enemy>();
 
     private int waveCounter = 1;
 
@@ -84,21 +88,33 @@ public class GameManager : MonoSingleton<GameManager>
     public enum GameState
     {
         Playing,
+        Planning,
         Paused
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        gameState = GameState.Planning;
+        prevGameState = GameState.Planning;
         InitPools();
         InitGame();
     }
 
     public void InitPools()
     {
-        int length = enemyPrefabs.Length;
+        int length = effectPrefabs.Length;
+        effectPools = new ObjectPool<PooledObject>[length];
+        int[] capacities = new int[6] { 5, 5, 10, 10, 5, 15 };
+        for (int i = 0; i < length; i++)
+        {
+            GameObject poolObject = new GameObject(effectPrefabs[i].name + " pool gameobject");
+            poolObject.transform.parent = transform.GetChild(0);
+            effectPools[i] = poolObject.AddComponent<GenericPool>().Init(effectPrefabs[i], capacities[i]).GetPool();
+        }
+        length = enemyPrefabs.Length;
         enemyPools = new ObjectPool<PooledObject>[length];
-        int[] capacities = new int[12] { 50, 20, 10, 10, 10, 5, 5, 25, 10, 5, 5, 5};
+        capacities = new int[12] { 50, 20, 10, 10, 10, 5, 5, 25, 10, 5, 5, 5};
         for (int i = 0; i < length; i++)
         {
             GameObject poolObject = new GameObject(enemyPrefabs[i].name + " pool gameobject");
@@ -123,21 +139,15 @@ public class GameManager : MonoSingleton<GameManager>
             poolObject.transform.parent = transform.GetChild(0);
             projectilePools[i] = poolObject.AddComponent<GenericPool>().Init(projectilePrefabs[i], capacities[i]).GetPool();
         }
-        length = effectPrefabs.Length;
-        effectPools = new ObjectPool<PooledObject>[length];
-        capacities = new int[5] { 5, 5, 10, 10, 5 };
-        for (int i = 0; i < length; i++)
-        {
-            GameObject poolObject = new GameObject(effectPrefabs[i].name + " pool gameobject");
-            poolObject.transform.parent = transform.GetChild(0);
-            effectPools[i] = poolObject.AddComponent<GenericPool>().Init(effectPrefabs[i], capacities[i]).GetPool();
-        }
         GameObject popUpPoolObject = new GameObject(goldPopUpPrefab.name + " pool gameobject");
         popUpPoolObject.transform.parent = transform.GetChild(0);
         goldPopUpPool = popUpPoolObject.AddComponent<GenericPool>().Init(goldPopUpPrefab, 20).GetPool();
         GameObject damagePoolObject = new GameObject(damagePopUpPrefab.name + " pool gameobject");
         damagePoolObject.transform.parent = transform.GetChild(0);
         damagePopUpPool = damagePoolObject.AddComponent<GenericPool>().Init(damagePopUpPrefab, 35).GetPool();
+        GameObject HPDamageObject = new GameObject(HPDamagePrefab.name + " pool gameobject");
+        HPDamageObject.transform.parent = transform.GetChild(0);
+        HPDamagePool = HPDamageObject.AddComponent<GenericPool>().Init(HPDamagePrefab, 5).GetPool();
     }
 
 
@@ -146,9 +156,27 @@ public class GameManager : MonoSingleton<GameManager>
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W)) { StartStage(); }
-        if (gameState == GameState.Paused) { return; }
+        if (Input.GetKeyDown(KeyCode.Escape)) 
+        {
+            LevelGeneration.instance.ExpandMap(100);
+            //StopStage(); 
+        }
+        if (gameState != GameState.Playing) { return; }
         EnemySpawnTimer();
+    }
+
+    public void TogglePause()
+    {
+        if(gameState == GameState.Paused) { gameState = prevGameState; }
+        else { gameState = GameState.Paused; }
+        foreach(Tower tower in towers)
+        {
+            tower.TogglePause(gameState == GameState.Paused);
+        }
+        foreach(Enemy enemy in enemies)
+        {
+            enemy.TogglePause(gameState == GameState.Paused);
+        }
     }
 
     private void EnemySpawnTimer()
@@ -174,7 +202,7 @@ public class GameManager : MonoSingleton<GameManager>
         enemy.transform.position = spawnTile.transform.position;
         enemy.Init(spawnTile);
         enemy.gameObject.SetActive(true);
-
+        enemies.Add(enemy);
         enemyCount++;
 
         currentSpawnGroup.enemySpawnInfos[chosenIndex].enemyCount--;
@@ -184,6 +212,7 @@ public class GameManager : MonoSingleton<GameManager>
     public void SpawnEnemy(EnemyTypes enemyType, Vector3 pos, Tile goalTile)
     {
         Enemy enemy = enemyPools[(int)enemyType].Get().GetComponent<Enemy>();
+        enemies.Add(enemy);
         enemy.transform.SetParent(enemyHolder);
         enemy.transform.position = pos;
         enemy.InitWithTarget(goalTile);
@@ -224,6 +253,8 @@ public class GameManager : MonoSingleton<GameManager>
         return effect;
     }
 
+    public Transform GetEffectHolder() { return effectHolder; }
+
     public void InitGame()
     {
         playerHP = maxHP;
@@ -244,6 +275,8 @@ public class GameManager : MonoSingleton<GameManager>
         UIManager.SetHP(playerHP, maxHP);
         UIManager.SetGold(playerGold);
         UIManager.EnableStartWaveButton();
+        gameState = GameState.Planning;
+        prevGameState = GameState.Planning;
     }
 
     public void StartStage()
@@ -255,6 +288,7 @@ public class GameManager : MonoSingleton<GameManager>
             currentWaveTotalEnemyCount += currentSpawnGroup.enemySpawnInfos[i].enemyCount;
         }
         gameState = GameState.Playing;
+        prevGameState = GameState.Playing;
         spawningEnemies = true;
         UIManager.RoundStart(currentWaveTotalEnemyCount * 0.55f);
     }
@@ -273,8 +307,9 @@ public class GameManager : MonoSingleton<GameManager>
         popUp.gameObject.SetActive(true);
     }
 
-    public void EnemyKilled(int goldValue, Vector3 pos)
+    public void EnemyKilled(Enemy enemy, int goldValue, Vector3 pos)
     {
+        enemies.Remove(enemy);
         playerGold += goldValue;
         UIManager.SetGold(playerGold);
         enemyCount--;
@@ -284,7 +319,6 @@ public class GameManager : MonoSingleton<GameManager>
         popUp.gameObject.SetActive(true);
         if(enemyCount <= 0 && !spawningEnemies)
         {
-            print("enemy killed stop stage");
             StopStage();
         }
     }
@@ -310,21 +344,43 @@ public class GameManager : MonoSingleton<GameManager>
         {
             StopStage();
         }
+
+        GoldEarnedPopUp popUp = HPDamagePool.Get().GetComponent<GoldEarnedPopUp>();
+        popUp.transform.position = LevelGeneration.instance.GetCastleTile().transform.position + Vector3.up;
+        popUp.InitAsDamage(damage);
+        popUp.gameObject.SetActive(true);
     }
     private void StopStage()
     {
-        print("stop stage");
-        int multiple = Mathf.FloorToInt(waveCounter / 10);
-        int modulo = Mathf.FloorToInt(waveCounter / 2);
-        int reward = 25 + (modulo - multiple) * 5 + 10 * multiple;
+        int reward = 20;
+        for(int i = 1; i <= waveCounter; i++)
+        {
+            if(i <= 10)
+            {
+                if(i % 2 == 0) { reward += 4; }
+            }
+            else if(i <= 20)
+            {
+                if (i % 2 == 0) { reward += 2; }
+            }
+            else if(i <= 30)
+            {
+                if (i % 2 == 0) { reward += 1; }
+            }
+            else if(i < 90)
+            {
+                if (i % 10 == 0) { reward += 1; }
+            }
+        }
         UIManager.DisplayWaveCompleteInfo(waveCounter, reward);
         GivePlayerGold(reward);
         waveCounter++;
         UIManager.UpdateWaveText("Wave: " + waveCounter.ToString());
         UIManager.RoundEnd();
         ReleaseAllProjectiles();
-        gameState = GameState.Paused;
-        LevelGeneration.instance.ExpandMap();
+        gameState = GameState.Planning;
+        prevGameState = GameState.Planning;
+        LevelGeneration.instance.ExpandMap(waveCounter >= 20 ? 2 : 1);
         currentWaveTotalEnemyCount = 0;
         //UIManager.EnableStartWaveButton();
 

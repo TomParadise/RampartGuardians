@@ -92,6 +92,18 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 885bfc906f343b841a0d7233d244fe34, type: 2}
+    - target: {fileID: 6900295172387298247, guid: 5218c242424fabc40963cfcaf317d1cd, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6900295172387298247, guid: 5218c242424fabc40963cfcaf317d1cd, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6900295172387298247, guid: 5218c242424fabc40963cfcaf317d1cd, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.4
+      objectReference: {fileID: 0}
     - target: {fileID: 7194320649910655724, guid: 5218c242424fabc40963cfcaf317d1cd, type: 3}
       propertyPath: maxHP
       value: 40
@@ -110,7 +122,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7194320649910655724, guid: 5218c242424fabc40963cfcaf317d1cd, type: 3}
       propertyPath: goldReward
-      value: 25
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7194320649910655724, guid: 5218c242424fabc40963cfcaf317d1cd, type: 3}
       propertyPath: portraitSprite
@@ -120,6 +132,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 885bfc906f343b841a0d7233d244fe34, type: 2}
+    - target: {fileID: 7811746409055244478, guid: 5218c242424fabc40963cfcaf317d1cd, type: 3}
+      propertyPath: m_Radius
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

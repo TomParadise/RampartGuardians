@@ -91,12 +91,13 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator LerpSkyColours(float maxTime)
     {
+        if(maxTime < 4f) { maxTime = 4f; }
         float timer = 0;
         Quaternion startRot = shadowLight.transform.rotation;
         Quaternion goalRot = Quaternion.Euler(0, -90, 0);
         while (timer < maxTime/2)
         {
-            while (GameManager.instance.gameState != GameManager.GameState.Playing) { yield return null; }
+            while (GameManager.instance.gameState == GameManager.GameState.Paused) { yield return null; }
 
             timer += Time.deltaTime;
             skyLight.color = Color.Lerp(lightColours[0], lightColours[1], timer / maxTime);
@@ -109,7 +110,7 @@ public class UIManager : MonoBehaviour
         timeCycleImages[1].transform.SetAsFirstSibling();
         while (timer < maxTime)
         {
-            while (GameManager.instance.gameState != GameManager.GameState.Playing) { yield return null; }
+            while (GameManager.instance.gameState == GameManager.GameState.Paused) { yield return null; }
 
             timer += Time.deltaTime;
             skyLight.color = Color.Lerp(lightColours[0], lightColours[1], timer / maxTime);

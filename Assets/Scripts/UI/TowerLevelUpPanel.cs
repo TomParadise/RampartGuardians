@@ -50,7 +50,8 @@ public class TowerLevelUpPanel : MonoBehaviour
     {
         selectedTower = tower;
         titleText.text = name;
-        levelText.text = level.ToString();
+        if (level == 4) { levelText.text = "MAX"; }
+        else { levelText.text = level.ToString(); }
         statsText.text = damage.ToString() + "\n" + (1 / fireRate).ToString("F1") + "s\n" + range.ToString() + "m";
         upgradeText.text = upgradeInfo;
         upgradeCost = _upgradeCost;
@@ -84,7 +85,8 @@ public class TowerLevelUpPanel : MonoBehaviour
     {
         selectedTower = tower;
         titleText.text = name;
-        levelText.text = level.ToString();
+        if (level == 4) { levelText.text = "MAX"; }
+        else { levelText.text = level.ToString(); }
         statsText.gameObject.SetActive(false);
         upgradeText.text = upgradeInfo;
         upgradeCost = _upgradeCost;

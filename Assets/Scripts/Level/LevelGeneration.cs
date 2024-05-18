@@ -48,13 +48,17 @@ public class LevelGeneration : MonoSingleton<LevelGeneration>
     [SerializeField] private CameraMovement cameraMovement;
 
     private ObjectPool<PooledObject> spawnTilePool;
+    private ObjectPool<PooledObject> finalSpawnTilePool;
 
 
     private void Start()
     {
         GameObject spawnPoolObject = new GameObject(tilePrefabs[5].name + " pool gameobject");
         spawnPoolObject.transform.parent = transform;
-        spawnTilePool = spawnPoolObject.AddComponent<GenericPool>().Init(tilePrefabs[5], 5).GetPool();
+        spawnTilePool = spawnPoolObject.AddComponent<GenericPool>().Init(tilePrefabs[5], 4).GetPool();
+        GameObject finalSpawnPoolObject = new GameObject(tilePrefabs[6].name + " pool gameobject");
+        finalSpawnPoolObject.transform.parent = transform;
+        finalSpawnTilePool = finalSpawnPoolObject.AddComponent<GenericPool>().Init(tilePrefabs[6], 4).GetPool();
     }
 
     public void AddTowerPositioner(TowerPositioner towerPositioner, bool utility) 
@@ -1041,6 +1045,8 @@ public class LevelGeneration : MonoSingleton<LevelGeneration>
         {
             IncreaseMapSize();
         }
+        AddBufferAroundMap();
+
         SetPathConnections();
         UpdateTileCost(gridTiles[0]);
         SetPathModelsAndRotations();
@@ -1050,6 +1056,22 @@ public class LevelGeneration : MonoSingleton<LevelGeneration>
             tile = tile.childTiles[0];
         }
         spawnTiles.Add(tile);
+
+        foreach(Tile endTile in endTiles)
+        {
+            if (endTile.prepends != prepends)
+            {
+                //print(endTile.prepends.y + " - " + prepends.y + " = " + Mathf.Abs(endTile.prepends.y - prepends.y) + " | " + endTile.prepends.x + " - " + prepends.x + " = " + Mathf.Abs(endTile.prepends.x - prepends.x));
+                //print(endTile.coordinates.y + " , " + endTile.coordinates.x + " | " + (int)(endTile.coordinates.y + Mathf.Abs(endTile.prepends.y - prepends.y)) + " , " + (int)(endTile.coordinates.x + Mathf.Abs(endTile.prepends.x - prepends.x)));
+                int y = (int)(endTile.coordinates.y + Mathf.Abs(endTile.prepends.y - prepends.y));
+                int x = (int)(endTile.coordinates.x + Mathf.Abs(endTile.prepends.x - prepends.x));
+                if (y >= 0 && y < tempTiles.Length &&
+                    x >= 0 && x < tempTiles[y].Length)
+                {
+                    tempTiles[y][x].isOccupied = true;
+                }
+            }
+        }
 
         CreateBlankTiles(System.Array.IndexOf(gridTiles.ToArray(), tile));
 
@@ -1061,6 +1083,42 @@ public class LevelGeneration : MonoSingleton<LevelGeneration>
         UpdateCamLimits();
         cameraMovement.ClampPosAndRot();
         cameraMovement.ResetPos();
+    }
+
+    private void AddBufferAroundMap()
+    {
+        prepends.x--;
+        prepends.y--;
+        appends.x++;
+        appends.y++;
+
+        gridWidth += 2;
+        gridHeight += 2;
+
+        //EXPAND THE GRID
+        TempTile[][] newTiles = new TempTile[gridHeight][];
+        for (int y = 0; y < newTiles.Length; y++)
+        {
+            newTiles[y] = new TempTile[gridWidth];
+            for (int x = 0; x < newTiles[y].Length; x++)
+            {
+                if ((y < 1) || (y >= gridHeight - 1) ||
+                    (x < 1) || (x >= gridHeight - 1))
+                {
+                    //new  tiles that need to be added
+                    TempTile tile = new TempTile();
+                    tile.coordinates = new Vector2(x, y);
+                    newTiles[y][x] = tile;
+                }
+                else // existing tiles in the old array
+                {
+                    TempTile tempTile = tempTiles[y - 1][x - 1];
+                    tempTile.coordinates += new Vector2(1, 1);
+                    newTiles[y][x] = tempTile;
+                }
+            }
+        }
+        tempTiles = newTiles;
     }
 
     public void UpdateCamLimits()
@@ -1250,7 +1308,7 @@ public class LevelGeneration : MonoSingleton<LevelGeneration>
 
     public void CreateBlankTiles(int spawnTileIndex)
     {
-        List<int> detailsIndices = RandomHelpers.GenerateRandomListOfCount(0, gridHeight * gridWidth, Mathf.FloorToInt((gridHeight * gridWidth) * 0.4f));
+        List<int> detailsIndices = RandomHelpers.GenerateRandomListOfCount(0, gridHeight * gridWidth, Mathf.FloorToInt((gridHeight * gridWidth) * 0.35f));
         blankTiles = new BlankTile[gridHeight][];
         for(int i = 0; i < blankTiles.Length; i++)
         {
@@ -1398,75 +1456,91 @@ public class LevelGeneration : MonoSingleton<LevelGeneration>
         return spawnTiles[spawnerCounter];
     }
 
-    public void ExpandMap()
+    public void ExpandMap(int expansionCount)
     {
-        Tile newSpawnTile = null;
-        List<Tile> tilesToBounce = new List<Tile>();
-        Vector2 minimums = Vector2.zero;
-        Vector2 maximums = Vector2.zero;
-        int bestTilePathCount = -1;
-        for(int spawnTile = 0; spawnTile < spawnTiles.Count; spawnTile++)
+        for (int i = 0; i < expansionCount; i++)
         {
-            int tilePathCount = 1;
-            Tile parent = spawnTiles[spawnTile].parentTile;
-            while(parent.parentTile != parent)
+            Tile newSpawnTile = null;
+            List<Tile> tilesToBounce = new List<Tile>();
+            Vector2 minimums = Vector2.zero;
+            Vector2 maximums = Vector2.zero;
+            int bestTilePathCount = -1;
+            for (int spawnTile = 0; spawnTile < spawnTiles.Count; spawnTile++)
             {
-                tilePathCount++;
-                parent = parent.parentTile;
-            }
-            if(newSpawnTile == null ||tilePathCount < bestTilePathCount)
-            {
-                newSpawnTile = spawnTiles[spawnTile];
-                bestTilePathCount = tilePathCount;
-            }
-        }
-        Tile tile = newSpawnTile;
-        spawnTiles.Remove(newSpawnTile);
-        for (int childTile = 0; childTile < tile.childTiles.Count; childTile++)
-        {
-            Tile child = tile.childTiles[childTile];
-            tilesToBounce.Add(child);
-            spawnTiles.Add(child);
-            if (child.prepends.x < minimums.x) { minimums.x = child.prepends.x; }
-            if (child.prepends.y < minimums.y) { minimums.x = child.prepends.y; }
-            if (child.appends.x > maximums.x) { maximums.x = child.appends.x; }
-            if (child.appends.y > maximums.y) { maximums.x = child.appends.y; }
-        }
-
-        tile.spawnTile.Release();
-        tile.spawnTile = null;
-        tile.InstantBounce();
-
-        foreach(Tile bounce in tilesToBounce) 
-        {
-            //bounce.BounceTile(); 
-            bounce.spawnTile = spawnTilePool.Get().GetComponent<BlankTile>();
-            bounce.spawnTile.InitSpawnTile(bounce.transform.position, bounce.parentTile.transform.position);
-            int yPos = (int)(bounce.transform.position.z - prepends.y);
-            int xPos = (int)(bounce.transform.position.x - prepends.x);
-            for (int y = -1; y < 2; y += 2)
-            {
-                bool corner = true;
-                if (yPos + y < blankTiles.Length && yPos + y >= 0 && blankTiles[yPos + y][xPos] != null)
+                if(spawnTiles[spawnTile].childTiles.Count == 0) { continue; }
+                int tilePathCount = 1;
+                Tile parent = spawnTiles[spawnTile].parentTile;
+                while (parent.parentTile != parent)
                 {
-                    blankTiles[yPos + y][xPos].BounceTile();
+                    tilePathCount++;
+                    parent = parent.parentTile;
                 }
-                else { corner = false; }
-                for (int x = -1; x < 2; x += 2)
+                if (newSpawnTile == null || tilePathCount < bestTilePathCount)
                 {
-                    if (xPos + x < blankTiles[yPos].Length && xPos + x >= 0 && blankTiles[yPos][xPos + x] != null)
-                    {
-                        blankTiles[yPos][xPos + x].BounceTile();
+                    newSpawnTile = spawnTiles[spawnTile];
+                    bestTilePathCount = tilePathCount;
+                }
+            }
+            if(newSpawnTile == null) { continue; }
+            Tile tile = newSpawnTile;
+            spawnTiles.Remove(newSpawnTile);
+            for (int childTile = 0; childTile < tile.childTiles.Count; childTile++)
+            {
+                Tile child = tile.childTiles[childTile];
+                tilesToBounce.Add(child);
+                spawnTiles.Add(child);
+                if (child.prepends.x < minimums.x) { minimums.x = child.prepends.x; }
+                if (child.prepends.y < minimums.y) { minimums.x = child.prepends.y; }
+                if (child.appends.x > maximums.x) { maximums.x = child.appends.x; }
+                if (child.appends.y > maximums.y) { maximums.x = child.appends.y; }
+            }
 
-                        if(yPos + y < blankTiles.Length && yPos + y >= 0 && corner && blankTiles[yPos + y][xPos + x] != null)
+            tile.spawnTile.Release();
+            tile.spawnTile = null;
+            tile.InstantBounce();
+
+            foreach (Tile bounce in tilesToBounce)
+            {
+                //bounce.BounceTile(); 
+                if(bounce.childTiles.Count > 0)
+                {
+                    bounce.spawnTile = spawnTilePool.Get().GetComponent<BlankTile>();
+                }
+                else
+                {
+                    bounce.spawnTile = finalSpawnTilePool.Get().GetComponent<BlankTile>();
+                }
+                bounce.spawnTile.InitSpawnTile(bounce.transform.position, bounce.parentTile.transform.position);
+                int yPos = (int)(bounce.transform.position.z - prepends.y);
+                int xPos = (int)(bounce.transform.position.x - prepends.x);
+                for (int y = -1; y < 2; y += 2)
+                {
+                    bool corner = true;
+                    if (yPos + y < blankTiles.Length && yPos + y >= 0 && xPos >= 0 && xPos < blankTiles[yPos + y].Length && blankTiles[yPos + y][xPos] != null)
+                    {
+                        blankTiles[yPos + y][xPos].BounceTile();
+                    }
+                    else { corner = false; }
+                    for (int x = -1; x < 2; x += 2)
+                    {
+                        if (yPos >= 0 && yPos < blankTiles.Length && xPos + x < blankTiles[yPos].Length && xPos + x >= 0 && blankTiles[yPos][xPos + x] != null)
                         {
-                            blankTiles[yPos + y][xPos + x].BounceTile();
+                            blankTiles[yPos][xPos + x].BounceTile();
+
+                            if (yPos + y < blankTiles.Length && yPos + y >= 0 && corner && xPos >= 0 && xPos < blankTiles[yPos + y].Length && blankTiles[yPos + y][xPos + x] != null)
+                            {
+                                blankTiles[yPos + y][xPos + x].BounceTile();
+                            }
                         }
                     }
                 }
             }
         }
-
         UpdateCamLimits();
+    }
+
+    public GameObject GetCastleTile()
+    {
+        return gridTiles[0].gameObject;
     }
 }

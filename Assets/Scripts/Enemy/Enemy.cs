@@ -37,6 +37,10 @@ public class Enemy : PooledObject
 
     [SerializeField] private GameObject popupHolder;
 
+    private PooledObject buffEffect = null;
+
+    public void TogglePause(bool paused) { animator.speed = paused ? 0 : 1; }
+
     public override void ResetObject()
     {
         currentHP = maxHP;
@@ -47,7 +51,18 @@ public class Enemy : PooledObject
         maxSlowTimer = 0;
         buffed = false;
         slowed = false;
+        ReleaseBuffEffect();
         base.ResetObject();
+    }
+
+    public void ReleaseBuffEffect()
+    {
+        if (buffEffect != null)
+        {
+            buffEffect.transform.SetParent(GameManager.instance.GetEffectHolder());
+            buffEffect.Release();
+            buffEffect = null;
+        }
     }
 
     public virtual void SetBuffedSpeed(bool buffing)
@@ -74,14 +89,14 @@ public class Enemy : PooledObject
         }
     }
 
-    public void CheckForBuffingAoEs()
+    public void CheckForBuffingAoEs(GameObject avoidEnemy)
     {
         Collider[] cols = Physics.OverlapSphere(transform.position, 0.5f, 1 << 12);
-
-        if (cols == null || cols.Length == 0)
+        if (cols == null || cols.Length == 0 || (cols.Length == 1 && cols[0].gameObject == avoidEnemy))
         {
             SetBuffedSpeed(false);
             buffed = false;
+            ReleaseBuffEffect();
         }
     }
 
@@ -116,6 +131,13 @@ public class Enemy : PooledObject
     {
         buffed = true;
         SetBuffedSpeed(true);
+        if(buffEffect == null)
+        {
+            buffEffect = GameManager.instance.GetEffect(5).GetComponent<PooledObject>();
+            buffEffect.transform.SetParent(transform);
+            buffEffect.transform.localPosition = Vector3.zero;
+            buffEffect.gameObject.SetActive(true);
+        }
     }
 
     public virtual void Init(Tile spawnTile)
@@ -216,7 +238,7 @@ public class Enemy : PooledObject
         {
             GameManager.instance.GetUIManager().HideEnemyHPDisplay();
         }
-        GameManager.instance.EnemyKilled(goldReward, popupHolder.transform.position);
+        GameManager.instance.EnemyKilled(this, goldReward, popupHolder.transform.position);
         alive = false;
         hitbox.enabled = false;
         animator.Play("Death");

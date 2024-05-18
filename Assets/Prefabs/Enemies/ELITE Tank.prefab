@@ -94,7 +94,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7211146386373341387, guid: 2c3880aecba07494abbf57ed52a83f7d, type: 3}
       propertyPath: goldReward
-      value: 30
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7211146386373341387, guid: 2c3880aecba07494abbf57ed52a83f7d, type: 3}
       propertyPath: portraitSprite

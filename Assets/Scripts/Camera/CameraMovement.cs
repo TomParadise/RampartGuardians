@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class CameraMovement : MonoBehaviour
@@ -14,6 +15,9 @@ public class CameraMovement : MonoBehaviour
     public float moveSpeed = 5;
     public float zoomSpeed = 500;
     public bool holdingTower = false;
+    [SerializeField] private Image[] mouseIcons;
+
+    private Coroutine scrollIconCo = null;
 
     public void ResetPos()
     {
@@ -78,13 +82,37 @@ public class CameraMovement : MonoBehaviour
         cam.transform.position = pos;
     }
 
+    public void OnPointerUp(BaseEventData bed)
+    {
+        PointerEventData ped = (PointerEventData)bed;
+        //left button moves the camera
+        if (ped.pointerId == -1)
+        {
+            Color col = Color.white;
+            col.a = 0.6f;
+            mouseIcons[0].color = col;
+        }
+        //right button rotates the camera
+        else if (ped.pointerId == -2)
+        {
+            Color col = Color.white;
+            col.a = 0.6f;
+            mouseIcons[2].color = col;
+        }
+    }
+
     public void OnPointerDown(BaseEventData bed)
     {
         PointerEventData ped = (PointerEventData)bed;
+        //left mouse button
         if(ped.pointerId == -1)
         {
             prevMousePos = Input.mousePosition;
+            Color col = Color.white;
+            col.a = 1f;
+            mouseIcons[0].color = col;
         }
+        //right mouse button
         else if (ped.pointerId == -2)
         {
             prevMousePos = Input.mousePosition;
@@ -97,6 +125,9 @@ public class CameraMovement : MonoBehaviour
             {
                 mouseDownPos = Vector3.zero;
             }
+            Color col = Color.white;
+            col.a = 1f;
+            mouseIcons[2].color = col;
         }
     }
 
@@ -133,6 +164,25 @@ public class CameraMovement : MonoBehaviour
                 cam.transform.position += cam.transform.forward * ped.scrollDelta.y * Time.deltaTime * zoomSpeed;
                 ClampPos();
             }
+            if (scrollIconCo != null) { StopCoroutine(scrollIconCo); }
+            scrollIconCo = StartCoroutine(ScrollIconTimer());
         }
+    }
+
+    private IEnumerator ScrollIconTimer()
+    {
+        Color col = Color.white;
+        col.a = 1f;
+        mouseIcons[1].color = col;
+
+        float timer = 0.25f;
+        while(timer > 0)
+        {
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+
+        col.a = 0.6f;
+        mouseIcons[1].color = col;
     }
 }

@@ -61,6 +61,8 @@ public class Tower : PooledObject
 
     public int initTargeting = 1;
 
+    public void TogglePause(bool paused) { animator.speed = paused ? 0 : 1; }
+
     public virtual void OnRoundEnd() { }
 
     public enum TargetType

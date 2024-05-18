@@ -750,7 +750,7 @@ MonoBehaviour:
   currentHP: 0
   baseSpeed: 0.4
   speed: 0
-  goldReward: 200
+  goldReward: 75
   damage: 5
   alive: 1
   walking: 1

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageNumbers : PooledObject
+public class DamageNumbers : PooledParticleSystem
 {
     [SerializeField] private CartoonFX.CFXR_ParticleText particleText;
 

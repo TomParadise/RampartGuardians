@@ -284,7 +284,7 @@ Transform:
   m_GameObject: {fileID: 882461843560648790}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.02376534, y: 0.01, z: 0.06472997}
+  m_LocalPosition: {x: 0, y: 0.01, z: 0}
   m_LocalScale: {x: 4, y: 0.01, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1501,22 +1501,22 @@ MonoBehaviour:
     switchWeaponModel: 0
   - upgradeText: +10% fire rate
     damageUpgrade: 0
-    fireRateUpgrade: 0.022
+    fireRateUpgrade: 0.02
     rangeUpgrade: 0
     piercing: 0
     UpgradeCost: 175
     uniqueUpgrade: 0
     switchWeaponModel: 0
-  - upgradeText: +5 damage +5% fire rate
-    damageUpgrade: 5
-    fireRateUpgrade: 0.011
+  - upgradeText: Double spin on 3rd attack
+    damageUpgrade: 0
+    fireRateUpgrade: 0
     rangeUpgrade: 0
     piercing: 0
     UpgradeCost: 250
-    uniqueUpgrade: 0
+    uniqueUpgrade: 1
     switchWeaponModel: 1
   startDamage: 15
-  startFireRate: 0.22
+  startFireRate: 0.2
   startRange: 0.75
   damage: 1
   fireRate: 1
@@ -1544,10 +1544,9 @@ MonoBehaviour:
   damageType: AoE
   descriptionInfo: Swings axe in a circle at nearby enemies
   weaponModels:
-  - {fileID: 7474233998354372269}
   - {fileID: 6391091613559717529}
   - {fileID: 1914736384913973893}
-  towerCost: 500
+  towerCost: 550
   baseProjectileCount: 1
   levelUpPanel: {fileID: 0}
   initTargeting: 0

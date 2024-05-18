@@ -685,7 +685,7 @@ MonoBehaviour:
   animator: {fileID: 5635722129931381137}
   hitbox: {fileID: 6013604445963695167}
   targetTile: {fileID: 0}
-  maxHP: 60
+  maxHP: 70
   currentHP: 0
   baseSpeed: 0.65
   speed: 0
@@ -696,7 +696,7 @@ MonoBehaviour:
   walkCycleCounts:
   - 
   portraitSprite: {fileID: 21300000, guid: 92aceec6630de6a4e88a49a751fb9967, type: 3}
-  enemyName: Splitter
+  enemyName: Summoner
   clickedOn: 0
   showingHP: 0
   incomingProjectiles: []
