@@ -7,6 +7,7 @@ public class BurstTower : AttackingTower
     public int projectileCount = 3;
     public override void UpgradeTower()
     {
+        if (level - 1 == upgrades.Length) { return; }
         projectileCount += (int)upgrades[level - 1].uniqueUpgrade;
         base.UpgradeTower();
     }

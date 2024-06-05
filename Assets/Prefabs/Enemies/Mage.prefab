@@ -41,7 +41,6 @@ GameObject:
   m_Component:
   - component: {fileID: 827468373515540809}
   - component: {fileID: 7811746409055244478}
-  - component: {fileID: 3186175302455530110}
   m_Layer: 12
   m_Name: Enemy Buffing AoE
   m_TagString: Untagged
@@ -83,21 +82,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.4
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3186175302455530110
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8597559236698646438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38b5460cb519add4b9fe181255418f03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attachedEnemy: {fileID: 7194320649910655724}
 --- !u!1001 &493683618526604182
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -712,7 +698,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3b75fbce2af899449a8a0edccaf36516, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7194320649910655724}
+      addedObject: {fileID: 7937281028120512249}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3b75fbce2af899449a8a0edccaf36516, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1674912601865318769}
@@ -733,7 +719,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 3b75fbce2af899449a8a0edccaf36516, type: 3}
   m_PrefabInstance: {fileID: 493683618526604182}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7194320649910655724
+--- !u!114 &7937281028120512249
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -742,17 +728,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 727475871068722887}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abafec9d2546e4c4f9eca28995d9b374, type: 3}
+  m_Script: {fileID: 11500000, guid: 38b5460cb519add4b9fe181255418f03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 824621988208017285}
   hitbox: {fileID: 8172770769042181773}
   targetTile: {fileID: 0}
-  maxHP: 20
+  maxHP: 30
   currentHP: 0
-  baseSpeed: 0.7
+  baseSpeed: 0.6
   speed: 0.5
-  goldReward: 20
+  goldReward: 25
   damage: 2
   alive: 1
   walking: 1
@@ -770,6 +756,11 @@ MonoBehaviour:
   buffed: 0
   slowed: 0
   popupHolder: {fileID: 5367859278201201592}
+  deathSFX: {fileID: 8300000, guid: 0ab3508aa2650b64981ef03018dc8175, type: 3}
+  deathPoofSFX: {fileID: 8300000, guid: 6c588741791c04842bac3c96482d9082, type: 3}
+  hitTowerSFX: {fileID: 8300000, guid: 80e94465d2204da4191a0e26a20d3b11, type: 3}
+  takeDamageSFX: {fileID: 8300000, guid: 661cdc558ba987a4db60eb15a2c6d4b3, type: 3}
+  buffingTrigger: {fileID: 8597559236698646438}
 --- !u!54 &1674912601865318769
 Rigidbody:
   m_ObjectHideFlags: 0

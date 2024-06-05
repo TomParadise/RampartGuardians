@@ -20,6 +20,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private WaveCompletedPanel waveCompletedPanel;
     [SerializeField] private EnemyHPDisplay enemyHPDisplay;
     [SerializeField] private TowerPurchasePanel towerPurchasePanel;
+    private TowerLevelUpPanel activeUpgradePanel = null;
     private Coroutine skyColourCo = null;
 
     public TowerPanelUI GetTowerPanel() { return towerPanelUI; }
@@ -87,6 +88,7 @@ public class UIManager : MonoBehaviour
         timeCycleImages[0].transform.SetAsFirstSibling();
         if (skyColourCo != null) { StopCoroutine(skyColourCo); }
         StartCoroutine(LerpSkyToDay());
+        enemyHPDisplay.HideDisplay();
     }
 
     private IEnumerator LerpSkyColours(float maxTime)
@@ -143,15 +145,27 @@ public class UIManager : MonoBehaviour
     //init for utility towers
     public TowerLevelUpPanel InitTowerUpgradeInfo(Tower tower, string name, int level, string utilityDescription, string upgradeInfo, int _upgradeCost, int sellCost)
     {
+        if(activeUpgradePanel != null && activeUpgradePanel.CheckIsMouseInside()) { return null; }
         TowerLevelUpPanel panelInfo = Instantiate(towerUpgradePrefab, transform).GetComponent<TowerLevelUpPanel>();
         panelInfo.Init(tower, name, level, utilityDescription, upgradeInfo, _upgradeCost, sellCost);
+        activeUpgradePanel = panelInfo;
         return panelInfo;
     }
 
     public TowerLevelUpPanel InitTowerUpgradeInfo(Tower tower, string name, int level, float damage, float fireRate, float range, string upgradeInfo, int _upgradeCost, int sellCost, int targetingTower, int targetingType, int killCount = 0)
     {
+        if (activeUpgradePanel != null && activeUpgradePanel.CheckIsMouseInside()) { return null; }
         TowerLevelUpPanel panelInfo = Instantiate(towerUpgradePrefab, transform).GetComponent<TowerLevelUpPanel>();
         panelInfo.Init(tower, name, level, damage, fireRate, range, upgradeInfo, _upgradeCost, sellCost, targetingTower, targetingType, killCount);
+        activeUpgradePanel = panelInfo;
+        return panelInfo;
+    }
+    public TowerLevelUpPanel InitSorcerorUpgradeInfo(Tower tower, string name, int level, float damage, float fireRate, float range, string upgradeInfo, int _upgradeCost, int sellCost, int targetingTower, int targetingType, int killCount = 0)
+    {
+        if (activeUpgradePanel != null && activeUpgradePanel.CheckIsMouseInside()) { return null; }
+        TowerLevelUpPanel panelInfo = Instantiate(towerUpgradePrefab, transform).GetComponent<TowerLevelUpPanel>();
+        panelInfo.InitSorceror(tower, name, level, damage, fireRate, range, upgradeInfo, _upgradeCost, sellCost, targetingTower, targetingType, killCount);
+        activeUpgradePanel = panelInfo;
         return panelInfo;
     }
 }

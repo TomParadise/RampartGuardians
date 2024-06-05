@@ -766,7 +766,7 @@ MonoBehaviour:
   currentHP: 0
   baseSpeed: 1.1
   speed: 1
-  goldReward: 10
+  goldReward: 15
   damage: 1
   alive: 1
   walking: 1
@@ -783,6 +783,10 @@ MonoBehaviour:
   buffed: 0
   slowed: 0
   popupHolder: {fileID: 1248044082897816996}
+  deathSFX: {fileID: 8300000, guid: 0ab3508aa2650b64981ef03018dc8175, type: 3}
+  deathPoofSFX: {fileID: 8300000, guid: 6c588741791c04842bac3c96482d9082, type: 3}
+  hitTowerSFX: {fileID: 8300000, guid: 80e94465d2204da4191a0e26a20d3b11, type: 3}
+  takeDamageSFX: {fileID: 8300000, guid: 661cdc558ba987a4db60eb15a2c6d4b3, type: 3}
 --- !u!54 &3039530191403497801
 Rigidbody:
   m_ObjectHideFlags: 0

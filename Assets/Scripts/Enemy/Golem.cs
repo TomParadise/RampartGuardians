@@ -5,6 +5,13 @@ using UnityEngine;
 public class Golem : Enemy
 {
     private bool halfHP = false;
+
+    public override void ResetObject()
+    {
+        halfHP = false;
+        base.ResetObject();
+    }
+
     public override void TakeDamage(float damageTaken, Tower attackingTower)
     {
         base.TakeDamage(damageTaken, attackingTower);

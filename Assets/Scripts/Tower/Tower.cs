@@ -32,10 +32,10 @@ public class Tower : PooledObject
     public bool placed = false;
     [SerializeField] public MeshRenderer radiusObject;
     [SerializeField] private Material[] radiusMats;
-    [SerializeField] private GameObject hoverText;
+    [SerializeField] public GameObject hoverText;
     private TowerPositioner towerPositioner;
 
-    private bool showingUpgradeInfo = false;
+    public bool showingUpgradeInfo = false;
     public int goldValue = 300;
 
     public float buffAmount = 0;
@@ -61,9 +61,27 @@ public class Tower : PooledObject
 
     public int initTargeting = 1;
 
+    [SerializeField] private AudioClip placeTowerSFX;
+    [SerializeField] private AudioClip snapTowerSFX;
+    [SerializeField] public AudioClip infoPopUpSFX;
+    private PooledObject buffParticles = null;
+
+    public int roundsActive = -1;
+
     public void TogglePause(bool paused) { animator.speed = paused ? 0 : 1; }
 
-    public virtual void OnRoundEnd() { }
+    public virtual void OnRoundEnd() 
+    {
+        roundsActive++;
+        if (levelUpPanel != null)
+        {
+            levelUpPanel.UpdateSellCost(goldValue, roundsActive);
+        }
+    }
+    public virtual void OnRoundStart() 
+    {
+        if(roundsActive == -1) { roundsActive = 0; }
+    }
 
     public enum TargetType
     {
@@ -72,6 +90,30 @@ public class Tower : PooledObject
         HighestHP,
         LowestHP,
         Auto
+    }
+
+    public virtual void Buff(float _buffAmount)
+    {
+        if (!placed) { return; }
+        buffAmount = _buffAmount;
+        if(buffParticles == null)
+        {
+            buffParticles = GameManager.instance.GetEffect(6).GetComponent<PooledObject>();
+            buffParticles.transform.SetParent(transform.GetChild(transform.childCount - 1));
+            buffParticles.transform.localPosition = Vector3.zero;
+            buffParticles.gameObject.SetActive(true);
+        }
+    }
+
+    public virtual void RemoveBuff()
+    {
+        buffAmount = 0;
+        if (buffParticles != null)
+        {
+            buffParticles.transform.SetParent(GameManager.instance.GetEffectHolder());
+            buffParticles.Release();
+            buffParticles = null;
+        }
     }
 
     public void GiveKill()
@@ -102,6 +144,7 @@ public class Tower : PooledObject
         level++;
         levelIcon.SetSprite(level - 2);
         UpdateUpgradeInfo();
+        AudioManager.instance.PlayButtonUpgradeSFX();
     }
 
     public virtual void UpdateUpgradeInfo()
@@ -116,11 +159,11 @@ public class Tower : PooledObject
                 upgradeCost = upgrades[level - 1].UpgradeCost;
             }
             levelUpPanel.Init(
-                this, towerName, level, damage, fireRate, range, upgradeInfo, upgradeCost, Mathf.FloorToInt((float)goldValue * 0.9f), initTargeting, (int)targetType, kills);
+                this, towerName, level, damage, fireRate, range, upgradeInfo, upgradeCost, goldValue, initTargeting, (int)targetType, kills);
         }
     }
 
-    public void ForceSetNewUpgradeInfo(TowerLevelUpPanel towerLevelUpPanel)
+    public virtual void ForceSetNewUpgradeInfo(TowerLevelUpPanel towerLevelUpPanel)
     {
         string upgradeInfo = "Max level";
         int upgradeCost = 0;
@@ -129,11 +172,12 @@ public class Tower : PooledObject
             upgradeInfo = upgrades[level - 1].upgradeText;
             upgradeCost = upgrades[level - 1].UpgradeCost;
         }
-        towerLevelUpPanel.Init(this, towerName, level, damage, fireRate, range, upgradeInfo, upgradeCost, Mathf.FloorToInt((float)goldValue * 0.8f), initTargeting, (int)targetType, kills);
+        towerLevelUpPanel.Init(this, towerName, level, damage, fireRate, range, upgradeInfo, upgradeCost, goldValue, initTargeting, (int)targetType, kills);
     }
 
     public virtual void InitUpgradeInfo()
     {
+        AudioManager.instance.PlaySFX(infoPopUpSFX);
         string upgradeInfo = "Max level";
         int upgradeCost = 0;
         if(level - 1 < upgrades.Length) 
@@ -142,15 +186,34 @@ public class Tower : PooledObject
             upgradeCost = upgrades[level - 1].UpgradeCost;
         }
         levelUpPanel = GameManager.instance.GetUIManager().InitTowerUpgradeInfo(
-            this, towerName, level, damage, fireRate, range, upgradeInfo, upgradeCost, Mathf.FloorToInt((float)goldValue * 0.9f), initTargeting, (int)targetType, kills);
+            this, towerName, level, damage, fireRate, range, upgradeInfo, upgradeCost, goldValue, initTargeting, (int)targetType, kills);
+        if(levelUpPanel == null)
+        {
+            showingUpgradeInfo = false;
+            radiusObject.gameObject.SetActive(false);
+            hoverText.SetActive(false);
+        }
     }
 
     public virtual void SellTower()
     {
-        GameManager.instance.GivePlayerGold(Mathf.FloorToInt((float)goldValue * 0.9f));
+        float value = (float)goldValue * (0.70f + (Mathf.Min(6, roundsActive) * 0.05f));
+        if(roundsActive == -1) { value = goldValue; }
+        GameManager.instance.GivePlayerGold(Mathf.FloorToInt(value));
         towerPositioner.OnTowerSold();
         GameManager.instance.towers.Remove(this);
         Release();
+    }
+
+    public override void Release()
+    {
+        if(buffParticles != null)
+        {
+            buffParticles.transform.SetParent(GameManager.instance.GetEffectHolder());
+            buffParticles.Release();
+            buffParticles = null;
+        }
+        base.Release();
     }
 
     public virtual void PlaceOnPositioner(TowerPositioner selectedPositioner, int cost)
@@ -160,7 +223,12 @@ public class Tower : PooledObject
         placed = true;
         GameManager.instance.towers.Add(this);
         if (!GetComponent<Collider>().bounds.Contains(Camera.main.ScreenToWorldPoint(Input.mousePosition))) { OnMouseExit(); }
-        transform.rotation = Quaternion.identity;
+        //transform.rotation = Quaternion.identity;
+        float rot = Mathf.Round(transform.eulerAngles.y / 90f) * 90;
+        transform.rotation = Quaternion.AngleAxis(rot, Vector3.up);
+
+        AudioManager.instance.PlaySFX(placeTowerSFX);
+        if (GameManager.instance.GetIsWaveStarted()) { roundsActive = 0; }
     }
 
     public override void ResetObject()
@@ -188,6 +256,7 @@ public class Tower : PooledObject
         levelIcon.SetSprite(-1);
         buffAmount = 0;
         piercingProjectiles = basePiercingProjectiles;
+        roundsActive = -1;
         base.ResetObject();
     }
 
@@ -207,6 +276,12 @@ public class Tower : PooledObject
         }
         if (closestCol != null)
         {
+            if (transform.parent.GetComponent<TowerButton>().positioner == closestCol.GetComponent<TowerPositioner>())
+            {
+                transform.position = closestCol.transform.position;
+                return;
+            }
+            AudioManager.instance.PlaySFX(snapTowerSFX);
             transform.parent.GetComponent<TowerButton>().positioner = closestCol.GetComponent<TowerPositioner>();
             transform.position = closestCol.transform.position;
             if (animator != null) { animator.Play("Idle"); }

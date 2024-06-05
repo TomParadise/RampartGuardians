@@ -746,11 +746,11 @@ MonoBehaviour:
   animator: {fileID: 4763807343726790399}
   hitbox: {fileID: 3250476294774289877}
   targetTile: {fileID: 0}
-  maxHP: 220
+  maxHP: 250
   currentHP: 0
-  baseSpeed: 0.4
+  baseSpeed: 0.415
   speed: 0
-  goldReward: 75
+  goldReward: 100
   damage: 5
   alive: 1
   walking: 1
@@ -765,6 +765,10 @@ MonoBehaviour:
   buffed: 0
   slowed: 0
   popupHolder: {fileID: 227101197443427749}
+  deathSFX: {fileID: 8300000, guid: 0ab3508aa2650b64981ef03018dc8175, type: 3}
+  deathPoofSFX: {fileID: 8300000, guid: 6c588741791c04842bac3c96482d9082, type: 3}
+  hitTowerSFX: {fileID: 8300000, guid: 80e94465d2204da4191a0e26a20d3b11, type: 3}
+  takeDamageSFX: {fileID: 8300000, guid: 661cdc558ba987a4db60eb15a2c6d4b3, type: 3}
 --- !u!136 &3250476294774289877
 CapsuleCollider:
   m_ObjectHideFlags: 0

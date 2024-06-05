@@ -45,6 +45,9 @@ public class GameManager : MonoSingleton<GameManager>
     public List<Enemy> enemies = new List<Enemy>();
 
     private int waveCounter = 1;
+    private float maxSpawnTimer = 0.55f;
+
+    [SerializeField] private AudioClip startWaveSFX;
 
     [System.Serializable]
     public struct EnemySpawnGroups
@@ -105,7 +108,7 @@ public class GameManager : MonoSingleton<GameManager>
     {
         int length = effectPrefabs.Length;
         effectPools = new ObjectPool<PooledObject>[length];
-        int[] capacities = new int[6] { 5, 5, 10, 10, 5, 15 };
+        int[] capacities = new int[8] { 5, 5, 10, 10, 5, 15, 10, 15 };
         for (int i = 0; i < length; i++)
         {
             GameObject poolObject = new GameObject(effectPrefabs[i].name + " pool gameobject");
@@ -167,8 +170,16 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void TogglePause()
     {
-        if(gameState == GameState.Paused) { gameState = prevGameState; }
-        else { gameState = GameState.Paused; }
+        if(gameState == GameState.Paused) 
+        { 
+            gameState = prevGameState;
+            AudioManager.instance.UnPauseAudio();
+        }
+        else 
+        { 
+            gameState = GameState.Paused;
+            AudioManager.instance.PauseAudio();
+        }
         foreach(Tower tower in towers)
         {
             tower.TogglePause(gameState == GameState.Paused);
@@ -187,14 +198,41 @@ public class GameManager : MonoSingleton<GameManager>
             if (enemySpawnTimer <= 0)
             {
                 SpawnEnemy();
-                enemySpawnTimer = 0.55f;
+                enemySpawnTimer = maxSpawnTimer;
             }
         }
     }
 
     public void SpawnEnemy()
     {
-        int chosenIndex = Random.Range(0, currentSpawnGroup.enemySpawnInfos.Count);
+        int chosenIndex = -1;
+
+        float rand = Random.value;
+        float totalChance = 0;
+        //prioritise spawning large enemies e.g. golems and necromancers before other groups
+        for (int i = 0; i < currentSpawnGroup.enemySpawnInfos.Count; i++)
+        {
+            EnemySpawnInfo info = currentSpawnGroup.enemySpawnInfos[i];
+            if (info.enemyType == EnemyTypes.Golem 
+                || info.enemyType == EnemyTypes.EliteGolem 
+                || info.enemyType == EnemyTypes.Necromancer)
+            {
+                chosenIndex = i;
+            }
+        }
+        //if there are no large enemies, randomly pick an enemy from all the groups to spawn
+        if (chosenIndex == -1)
+        {
+            for (int i = 0; i < currentSpawnGroup.enemySpawnInfos.Count; i++)
+            {
+                totalChance += currentSpawnGroup.enemySpawnInfos[i].enemyCount / currentWaveTotalEnemyCount;
+                if (rand <= totalChance)
+                {
+                    chosenIndex = i;
+                    break;
+                }
+            }
+        }
 
         Enemy enemy = enemyPools[(int)currentSpawnGroup.enemySpawnInfos[chosenIndex].enemyType].Get().GetComponent<Enemy>();
         enemy.transform.SetParent(enemyHolder);
@@ -206,7 +244,8 @@ public class GameManager : MonoSingleton<GameManager>
         enemyCount++;
 
         currentSpawnGroup.enemySpawnInfos[chosenIndex].enemyCount--;
-        if(currentSpawnGroup.enemySpawnInfos[chosenIndex].enemyCount <= 0) { currentSpawnGroup.enemySpawnInfos.RemoveAt(chosenIndex); }
+        currentWaveTotalEnemyCount--;
+        if (currentSpawnGroup.enemySpawnInfos[chosenIndex].enemyCount <= 0) { currentSpawnGroup.enemySpawnInfos.RemoveAt(chosenIndex); }
         if(currentSpawnGroup.enemySpawnInfos.Count == 0) { spawningEnemies = false; }
     }
     public void SpawnEnemy(EnemyTypes enemyType, Vector3 pos, Tile goalTile)
@@ -238,6 +277,11 @@ public class GameManager : MonoSingleton<GameManager>
         tower.transform.SetParent(positioner.transform.parent);
         tower.transform.position = positioner.transform.position;
         positioner.SetOccupied();
+
+        foreach(BuffingTower buffingTower in buffingTowers)
+        {
+            buffingTower.CheckThenBuff(tower);
+        }
     }
 
     public GameObject GetProjectile(int projectileIndex)
@@ -261,16 +305,11 @@ public class GameManager : MonoSingleton<GameManager>
         enemySpawnTimer = 0;
         stageCount = -1;
         currentWaveTotalEnemyCount = 0;
-        currentSpawnGroup = new EnemySpawnGroups(enemySpawnGroups[0].enemySpawnInfos);
-        for (int i = 0; i < currentSpawnGroup.enemySpawnInfos.Count; i++)
-        {
-            currentWaveTotalEnemyCount += currentSpawnGroup.enemySpawnInfos[i].enemyCount;
-        }
         LevelGeneration.instance.CreateMap(5); 
         buffingTowers = new List<BuffingTower>();
         towers = new List<Tower>();
         waveCounter = 1;
-        playerGold = 900;
+        playerGold = 1000;
         UIManager.UpdateWaveText("Wave: " + waveCounter.ToString());
         UIManager.SetHP(playerHP, maxHP);
         UIManager.SetGold(playerGold);
@@ -290,7 +329,25 @@ public class GameManager : MonoSingleton<GameManager>
         gameState = GameState.Playing;
         prevGameState = GameState.Playing;
         spawningEnemies = true;
-        UIManager.RoundStart(currentWaveTotalEnemyCount * 0.55f);
+
+        maxSpawnTimer = Mathf.Lerp(0.6f, 0.35f, currentWaveTotalEnemyCount / 30);
+        maxSpawnTimer = Mathf.Round(maxSpawnTimer * 16.666f) / 16.666f;
+
+        UIManager.RoundStart(currentWaveTotalEnemyCount * maxSpawnTimer);
+
+
+        AudioManager.instance.TransitionMusic(AudioManager.MusicState.Playing, waveCounter);
+        AudioManager.instance.PlaySFX(startWaveSFX);
+
+        foreach(Tower tower in towers)
+        {
+            tower.OnRoundStart();
+        }
+    }
+
+    public bool GetIsWaveStarted()
+    {
+        return gameState == GameState.Playing || (gameState == GameState.Paused && prevGameState == GameState.Playing);
     }
 
     public void GivePlayerGold(int goldValue)
@@ -339,6 +396,7 @@ public class GameManager : MonoSingleton<GameManager>
         if(playerHP <= 0)
         {
             //game over lose
+            AudioManager.instance.TransitionMusic(AudioManager.MusicState.Defeat, waveCounter);
         }
         else if(enemyCount <= 0 && !spawningEnemies)
         {
@@ -355,21 +413,17 @@ public class GameManager : MonoSingleton<GameManager>
         int reward = 20;
         for(int i = 1; i <= waveCounter; i++)
         {
-            if(i <= 10)
+            if(i <= 16)
             {
-                if(i % 2 == 0) { reward += 4; }
-            }
-            else if(i <= 20)
-            {
-                if (i % 2 == 0) { reward += 2; }
+                reward += 5;
             }
             else if(i <= 30)
             {
-                if (i % 2 == 0) { reward += 1; }
+                if (i % 2 == 0) { reward += 5; }
             }
-            else if(i < 90)
+            else if(i <= 45)
             {
-                if (i % 10 == 0) { reward += 1; }
+                if (i % 5 == 0) { reward += 5; }
             }
         }
         UIManager.DisplayWaveCompleteInfo(waveCounter, reward);
@@ -388,6 +442,8 @@ public class GameManager : MonoSingleton<GameManager>
         {
             tower.OnRoundEnd();
         }
+
+        AudioManager.instance.TransitionMusic(AudioManager.MusicState.Planning, waveCounter);
     }
 
     public void ReleaseAllProjectiles()

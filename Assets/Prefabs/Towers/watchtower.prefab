@@ -571,12 +571,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upgrades:
-  - upgradeText: Fire rate buff +5%
-    damageUpgrade: 0.05
+  - upgradeText: Fire rate buff +2.5%
+    damageUpgrade: 0.025
     fireRateUpgrade: 0
     rangeUpgrade: 0
     piercing: 0
-    UpgradeCost: 150
+    UpgradeCost: 250
     uniqueUpgrade: 0
     switchWeaponModel: 0
   - upgradeText: +1 range
@@ -584,15 +584,15 @@ MonoBehaviour:
     fireRateUpgrade: 0
     rangeUpgrade: 0.5
     piercing: 0
-    UpgradeCost: 200
+    UpgradeCost: 300
     uniqueUpgrade: 0
     switchWeaponModel: 0
-  - upgradeText: Fire rate buff +5%
-    damageUpgrade: 0.05
+  - upgradeText: Fire rate buff +2.5%
+    damageUpgrade: 0.025
     fireRateUpgrade: 0
     rangeUpgrade: 0
     piercing: 0
-    UpgradeCost: 250
+    UpgradeCost: 350
     uniqueUpgrade: 0
     switchWeaponModel: 0
   startDamage: 0.1
@@ -611,6 +611,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 3d5ab731e057da74fad2998d18e6d4c9, type: 2}
   - {fileID: 2100000, guid: 75e4265d18669ff4e967baa3cc7e5218, type: 2}
   hoverText: {fileID: 671651489609603314}
+  showingUpgradeInfo: 0
   goldValue: 300
   buffAmount: 0
   animator: {fileID: 0}
@@ -621,13 +622,17 @@ MonoBehaviour:
   kills: 0
   radiusScale: 2
   towerName: Watchtower
-  damageType: Grant +10% fire rate to towers in range
+  damageType: Grant +10% fire rate to towers in range          (Does not stack)
   descriptionInfo: 
   weaponModels: []
-  towerCost: 650
+  towerCost: 750
   baseProjectileCount: 1
   levelUpPanel: {fileID: 0}
   initTargeting: -1
+  placeTowerSFX: {fileID: 8300000, guid: b12c1e501b51c1340b16ba9a959678c5, type: 3}
+  snapTowerSFX: {fileID: 8300000, guid: 625ad317b451ec147984e94636d712a6, type: 3}
+  infoPopUpSFX: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
+  roundsActive: 0
   sphereCol: {fileID: 70859445317228171}
   buffingAoE: {fileID: 8390665365848063609}
 --- !u!136 &688166277363669697

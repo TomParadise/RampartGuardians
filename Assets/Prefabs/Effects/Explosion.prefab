@@ -9674,6 +9674,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   systemsToScale:
   - {fileID: 8174568507567696829}
+  explosionSFX: {fileID: 8300000, guid: c5b64fc8e1cd972418fbf8a591b0b98c, type: 3}
 --- !u!1 &4979152569381821616
 GameObject:
   m_ObjectHideFlags: 0

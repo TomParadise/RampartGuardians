@@ -210,6 +210,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7312706899936799293}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1458603363635225132
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4295550375901695797}
+  m_Layer: 0
+  m_Name: Effect Holder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4295550375901695797
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1458603363635225132}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3158359624241747409}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1461534454268512032
 GameObject:
   m_ObjectHideFlags: 0
@@ -593,6 +624,7 @@ Transform:
   - {fileID: 5266666886499872447}
   - {fileID: 6654782218852806720}
   - {fileID: 5421286042557489415}
+  - {fileID: 4295550375901695797}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &9021998186098610091
@@ -638,7 +670,7 @@ MonoBehaviour:
     UpgradeCost: 100
     uniqueUpgrade: 0
     switchWeaponModel: 0
-  - upgradeText: +30% fire rate
+  - upgradeText: +25% fire rate
     damageUpgrade: 0
     fireRateUpgrade: 0.075
     rangeUpgrade: 0
@@ -646,20 +678,20 @@ MonoBehaviour:
     UpgradeCost: 200
     uniqueUpgrade: 0
     switchWeaponModel: 0
-  - upgradeText: 2x explosion radius
+  - upgradeText: +50% explosion radius
     damageUpgrade: 0
     fireRateUpgrade: 0
     rangeUpgrade: 0
     piercing: 0
     UpgradeCost: 300
-    uniqueUpgrade: 1
+    uniqueUpgrade: 0.5
     switchWeaponModel: 0
   startDamage: 10
   startFireRate: 0.3
-  startRange: 2
+  startRange: 1.75
   damage: 1
   fireRate: 1
-  shotSpeed: 3
+  shotSpeed: 3.1
   range: 5
   level: 1
   basePiercingProjectiles: 0
@@ -670,6 +702,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 3d5ab731e057da74fad2998d18e6d4c9, type: 2}
   - {fileID: 2100000, guid: 75e4265d18669ff4e967baa3cc7e5218, type: 2}
   hoverText: {fileID: 2856144740526045051}
+  showingUpgradeInfo: 0
   goldValue: 300
   buffAmount: 0
   animator: {fileID: 9021998186098610091}
@@ -685,16 +718,21 @@ MonoBehaviour:
 
     weak vs. armoured foes'
   weaponModels: []
-  towerCost: 500
+  towerCost: 550
   baseProjectileCount: 1
   levelUpPanel: {fileID: 0}
   initTargeting: 1
+  placeTowerSFX: {fileID: 8300000, guid: b12c1e501b51c1340b16ba9a959678c5, type: 3}
+  snapTowerSFX: {fileID: 8300000, guid: 625ad317b451ec147984e94636d712a6, type: 3}
+  infoPopUpSFX: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
+  roundsActive: 0
   projectileSpawnPoint: {fileID: 5210663488705331837}
   projectileIndex: 2
   effectRange: 0.4
   rotateWithAttack: 1
   shotTimer: 0
   maxFireRateTimer: 1
+  attackSFX: {fileID: 8300000, guid: 563e5099838854540a3d75ce93770a63, type: 3}
 --- !u!136 &6572132142206527622
 CapsuleCollider:
   m_ObjectHideFlags: 0

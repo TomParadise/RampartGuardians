@@ -38,6 +38,12 @@ public class Enemy : PooledObject
     [SerializeField] private GameObject popupHolder;
 
     private PooledObject buffEffect = null;
+    private PooledObject slowEffect = null;
+
+    [SerializeField] private AudioClip deathSFX;
+    [SerializeField] private AudioClip deathPoofSFX;
+    [SerializeField] private AudioClip hitTowerSFX;
+    [SerializeField] private AudioClip takeDamageSFX;
 
     public void TogglePause(bool paused) { animator.speed = paused ? 0 : 1; }
 
@@ -112,6 +118,11 @@ public class Enemy : PooledObject
 
     private IEnumerator SlowDownCo(float duration)
     {
+        slowEffect = GameManager.instance.GetEffect(7).GetComponent<PooledObject>();
+        slowEffect.transform.SetParent(transform);
+        slowEffect.transform.SetAsFirstSibling();
+        slowEffect.transform.localPosition = Vector3.zero;
+        slowEffect.gameObject.SetActive(true);
         slowed = true;
         SetSlowedSpeed(true);
         slowTimer = 0;
@@ -125,6 +136,8 @@ public class Enemy : PooledObject
         }
         SetSlowedSpeed(false);
         slowed = false;
+        if (slowEffect != null) { slowEffect.Release(); }
+        slowEffect = null;
     }
 
     public void BuffSpeed()
@@ -214,7 +227,8 @@ public class Enemy : PooledObject
 
     public virtual void TakeDamage(float damageTaken, Tower attackingTower)
     {
-        if(currentHP <= 0) { return; }
+        if(currentHP <= 0 || damageTaken == 0) { return; }
+        AudioManager.instance.PlaySFX(takeDamageSFX);
         GameManager.instance.DamagePopUp((int)damageTaken, popupHolder.transform.position);
         currentHP -= damageTaken;
         if (showingHP)
@@ -242,6 +256,8 @@ public class Enemy : PooledObject
         alive = false;
         hitbox.enabled = false;
         animator.Play("Death");
+
+        AudioManager.instance.PlaySFX(deathSFX);
         //Release();
     }
 
@@ -251,6 +267,12 @@ public class Enemy : PooledObject
         effect.transform.position = transform.position + Vector3.up * 0.25f - transform.forward * 0.25f;
         effect.SetActive(true);
         if(slowCo != null) { StopCoroutine(slowCo); }
+        if(slowEffect != null)
+        {
+            slowEffect.Release();
+        }
+        slowEffect = null;
+        AudioManager.instance.PlaySFX(deathPoofSFX);
         base.Release();
     }
 
@@ -317,5 +339,6 @@ public class Enemy : PooledObject
         alive = false;
         hitbox.enabled = false;
         Release();
+        AudioManager.instance.PlaySFX(hitTowerSFX);
     }
 }

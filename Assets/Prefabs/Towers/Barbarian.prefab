@@ -979,6 +979,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &2714190554677913482
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5237455147636078130}
+  m_Layer: 0
+  m_Name: Effect Holder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5237455147636078130
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2714190554677913482}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4155996527154711927}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3016215095085145634
 GameObject:
   m_ObjectHideFlags: 0
@@ -1454,6 +1485,7 @@ Transform:
   - {fileID: 3395133714610292188}
   - {fileID: 5128697292077283565}
   - {fileID: 8550459757785170882}
+  - {fileID: 5237455147636078130}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &8020132512005986061
@@ -1491,20 +1523,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upgrades:
-  - upgradeText: +5 damage
-    damageUpgrade: 5
-    fireRateUpgrade: 0
-    rangeUpgrade: 0
-    piercing: 0
-    UpgradeCost: 125
-    uniqueUpgrade: 0
-    switchWeaponModel: 0
   - upgradeText: +10% fire rate
     damageUpgrade: 0
     fireRateUpgrade: 0.02
     rangeUpgrade: 0
     piercing: 0
-    UpgradeCost: 175
+    UpgradeCost: 150
+    uniqueUpgrade: 0
+    switchWeaponModel: 0
+  - upgradeText: +5 damage
+    damageUpgrade: 5
+    fireRateUpgrade: 0
+    rangeUpgrade: 0
+    piercing: 0
+    UpgradeCost: 250
     uniqueUpgrade: 0
     switchWeaponModel: 0
   - upgradeText: Double spin on 3rd attack
@@ -1512,7 +1544,7 @@ MonoBehaviour:
     fireRateUpgrade: 0
     rangeUpgrade: 0
     piercing: 0
-    UpgradeCost: 250
+    UpgradeCost: 350
     uniqueUpgrade: 1
     switchWeaponModel: 1
   startDamage: 15
@@ -1531,6 +1563,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 3d5ab731e057da74fad2998d18e6d4c9, type: 2}
   - {fileID: 2100000, guid: 75e4265d18669ff4e967baa3cc7e5218, type: 2}
   hoverText: {fileID: 3113667017254992235}
+  showingUpgradeInfo: 0
   goldValue: 300
   buffAmount: 0
   animator: {fileID: 8020132512005986061}
@@ -1546,16 +1579,21 @@ MonoBehaviour:
   weaponModels:
   - {fileID: 6391091613559717529}
   - {fileID: 1914736384913973893}
-  towerCost: 550
+  towerCost: 650
   baseProjectileCount: 1
   levelUpPanel: {fileID: 0}
   initTargeting: 0
+  placeTowerSFX: {fileID: 8300000, guid: b12c1e501b51c1340b16ba9a959678c5, type: 3}
+  snapTowerSFX: {fileID: 8300000, guid: 625ad317b451ec147984e94636d712a6, type: 3}
+  infoPopUpSFX: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
+  roundsActive: 0
   projectileSpawnPoint: {fileID: 0}
   projectileIndex: 0
   effectRange: 0
   rotateWithAttack: 0
   shotTimer: 0
   maxFireRateTimer: 1
+  attackSFX: {fileID: 8300000, guid: 8accb087405164b4ebba69cbe6276608, type: 3}
   spin: 1
   meleeHitboxes:
   - {fileID: 4356696282486719319}

@@ -12,6 +12,7 @@ public class MeleeTower : AttackingTower
 
     public override void UpgradeTower()
     {
+        if (level - 1 == upgrades.Length) { return; }
         if (upgrades[level - 1].uniqueUpgrade != 0)
         {
             doubleSpin = 0;
@@ -29,6 +30,8 @@ public class MeleeTower : AttackingTower
     public override void ResetObject()
     {
         doubleSpin = -1;
+        meleeTrail.Clear();
+        meleeTrail.gameObject.SetActive(false);
 
         base.ResetObject();
     }
@@ -57,15 +60,18 @@ public class MeleeTower : AttackingTower
                 meleeHitboxes[i].SetActive(true);
             }
         }
+
+        AudioManager.instance.PlaySFX(attackSFX);
     }
 
     private IEnumerator SpinAttack()
     {
         List<Collider> hitCols = new List<Collider>();
-        Vector3[] attackPoints = new Vector3[8] {new Vector3(-0.5f, 0, 0.5f), new Vector3(0, 0, 0.5f), new Vector3(0.5f, 0, 0.5f),
-                                                 new Vector3(0.5f, 0, 0), new Vector3(0.5f, 0, -0.5f), new Vector3(0, 0, -0.5f), 
-                                                 new Vector3(-0.5f, 0, -0.5f), new Vector3(-0.5f, 0, 0)};
+        Vector3[] attackPoints = new Vector3[8] {transform.forward * 0.5f, transform.forward * 0.5f + transform.right * 0.5f, transform.right * 0.5f,
+                                                 transform.right * 0.5f - transform.forward * 0.5f , -transform.forward * 0.5f , -transform.forward * 0.5f - transform.right * 0.5f,
+                                                 -transform.right * 0.5f, transform.forward * 0.5f - transform.right * 0.5f};
         if(doubleSpin > -1) { doubleSpin++; }
+        //doubleSpin = 3;
         int spinCount = 1;
         if (doubleSpin >= 3)
         {
@@ -80,7 +86,7 @@ public class MeleeTower : AttackingTower
         {
             for (int i = 0; i < attackPoints.Length; i++)
             {
-                float timer = spinCount == 2 ? 0.04f : 0.08f;
+                float timer = spinCount == 2 ? 0.0425f : 0.08f;
                 while(timer > 0)
                 {
                     while(GameManager.instance.gameState == GameManager.GameState.Paused) { yield return null; }
@@ -102,8 +108,10 @@ public class MeleeTower : AttackingTower
                 impact.transform.position = transform.position + attackPoints[i];
                 impact.SetActive(true);
             }
+            hitCols.Clear();
         }
         if(spinCount == 2) { GetComponent<Animator>().SetBool("Spin Complete", true); }
+        meleeTrail.gameObject.SetActive(false);
     }
 
 

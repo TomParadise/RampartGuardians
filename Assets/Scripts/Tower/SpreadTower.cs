@@ -21,6 +21,8 @@ public class SpreadTower : AttackingTower
             projectile.Init(damage, range, shotSpeed, piercingProjectiles, null, effectRange, this);
         }
         animator.Play("Shoot");
+
+        AudioManager.instance.PlaySFX(attackSFX);
     }
 
     public override void ResetObject()
@@ -31,7 +33,35 @@ public class SpreadTower : AttackingTower
 
     public override void UpgradeTower()
     {
+        if (level - 1 == upgrades.Length) { return; }
         projectileCount += (int)upgrades[level - 1].uniqueUpgrade;
         base.UpgradeTower();
+    }
+
+    public override void UpdateUpgradeInfo()
+    {
+        base.UpdateUpgradeInfo();
+        if (levelUpPanel != null)
+        {
+            levelUpPanel.InitSpreadDamageInfo(this, projectileCount, damage, fireRate, range);
+        }
+    }
+
+    public override void ForceSetNewUpgradeInfo(TowerLevelUpPanel towerLevelUpPanel)
+    {
+        base.ForceSetNewUpgradeInfo(towerLevelUpPanel);
+        if (levelUpPanel != null)
+        {
+            levelUpPanel.InitSpreadDamageInfo(this, projectileCount, damage, fireRate, range);
+        }
+    }
+
+    public override void InitUpgradeInfo()
+    {
+        base.InitUpgradeInfo();
+        if (levelUpPanel != null)
+        {
+            levelUpPanel.InitSpreadDamageInfo(this, projectileCount, damage, fireRate, range);
+        }
     }
 }

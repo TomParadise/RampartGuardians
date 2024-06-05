@@ -7,12 +7,22 @@ public class BuffingTower : Tower
     [SerializeField] private SphereCollider sphereCol;
     [SerializeField] private BuffingAoE buffingAoE;
 
+    public override void Buff(float _buffAmount)
+    {
+        return;
+    }
+
+    public override void RemoveBuff()
+    {
+        return;
+    }
+
     public override void ResetObject()
     {
         base.ResetObject();
         if (radiusObject != null) { radiusObject.transform.localScale = new Vector3(radiusScale * range, 0.01f, radiusScale * range); }
         sphereCol.radius = range;
-        buffingAoE.enabled = false;
+        buffingAoE.gameObject.SetActive(false);
     }
 
     public override void UpgradeTower()
@@ -20,10 +30,18 @@ public class BuffingTower : Tower
         base.UpgradeTower();
         if (radiusObject != null) { radiusObject.transform.localScale = new Vector3(radiusScale * range, 0.01f, radiusScale * range); }
         sphereCol.radius = range;
+
+        Collider[] cols = Physics.OverlapSphere(transform.position, range, 1 << 10);
+        foreach (Collider col in cols)
+        {
+            Tower tower = col.GetComponent<Tower>();
+            if(tower.buffAmount < damage) { tower.Buff(damage); }
+        }
     }
 
     public override void InitUpgradeInfo()
     {
+        AudioManager.instance.PlaySFX(infoPopUpSFX);
         string upgradeInfo = "Max level";
         int upgradeCost = 0;
         if (level - 1 < upgrades.Length)
@@ -33,6 +51,12 @@ public class BuffingTower : Tower
         }
         levelUpPanel = GameManager.instance.GetUIManager().InitTowerUpgradeInfo(
             this, towerName, level, "Grant +" + (100 * damage).ToString() + "% fire rate to towers in range", upgradeInfo, upgradeCost, Mathf.FloorToInt((float)goldValue * 0.8f));
+        if (levelUpPanel == null)
+        {
+            showingUpgradeInfo = false;
+            radiusObject.gameObject.SetActive(false);
+            hoverText.SetActive(false);
+        }
     }
 
     public override void UpdateUpgradeInfo()
@@ -55,7 +79,7 @@ public class BuffingTower : Tower
     {
         base.PlaceOnPositioner(selectedPositioner, cost);
         GameManager.instance.buffingTowers.Add(this);
-        buffingAoE.enabled = true;
+        buffingAoE.gameObject.SetActive(true);
     }
 
     public override void SellTower()
@@ -80,9 +104,27 @@ public class BuffingTower : Tower
         return false;
     }
 
+    public void CheckThenBuff(Tower towerToCheck)
+    {
+        if(CollisionCheck(towerToCheck))
+        {
+            if(towerToCheck.buffAmount > 0)
+            {
+                towerToCheck.buffAmount = damage;
+            }
+            else
+            {
+                towerToCheck.Buff(damage);
+            }
+        }
+    }
+
     public void TowerTriggerEnter(Tower tower)
     {
-        if (tower.buffAmount < damage) { tower.buffAmount = damage; }
+        if (tower.buffAmount < damage) 
+        { 
+            tower.Buff(damage);
+        }
     }
     public void TowerTriggerExit(Tower towerToCheck)
     {
@@ -91,12 +133,11 @@ public class BuffingTower : Tower
 
         foreach (BuffingTower tower in buffingTowers)
         {
-            if (tower.CollisionCheck(towerToCheck))
+            if (tower != this && tower.CollisionCheck(towerToCheck))
             {
                 collidingTowers.Add(tower);
             }
         }
-        towerToCheck.buffAmount = 0;
         if (collidingTowers.Count > 0)
         {
             BuffingTower highestTower = collidingTowers[0];
@@ -108,6 +149,10 @@ public class BuffingTower : Tower
                 }
             }
             towerToCheck.buffAmount = highestTower.damage;
+        }
+        else
+        {
+            towerToCheck.RemoveBuff();
         }
     }
 }

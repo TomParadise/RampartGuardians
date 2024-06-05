@@ -26,6 +26,9 @@ public class Necromancer : Enemy
     {
         Vector3 spawnPos = transform.position;
         spawnPos.y = 0;
-        GameManager.instance.SpawnEnemy(GameManager.EnemyTypes.Standard, spawnPos, targetTile);
+        GameManager.EnemyTypes type = GameManager.EnemyTypes.Standard;
+        if (GameManager.instance.stageCount > 20) { type = GameManager.EnemyTypes.EliteStandard; }
+        if (GameManager.instance.stageCount > 40) { type = GameManager.EnemyTypes.EliteRogue; }
+        GameManager.instance.SpawnEnemy(type, spawnPos, targetTile);
     }
 }

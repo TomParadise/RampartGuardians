@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7629404152726619118, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
       propertyPath: baseSpeed
-      value: 1.2
+      value: 1.225
       objectReference: {fileID: 0}
     - target: {fileID: 7629404152726619118, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
       propertyPath: enemyName
@@ -58,7 +58,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7629404152726619118, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
       propertyPath: goldReward
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7629404152726619118, guid: 3b4fc3c0067f1f04b838703c592c7109, type: 3}
       propertyPath: portraitSprite

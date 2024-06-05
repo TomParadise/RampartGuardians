@@ -105,6 +105,7 @@ MonoBehaviour:
   rotateWhileFlying: 0
   rotateVector: {x: 720, y: 0, z: 0}
   rotateObject: {fileID: 345974731070054922}
+  hitSFX: {fileID: 8300000, guid: c5b64fc8e1cd972418fbf8a591b0b98c, type: 3}
 --- !u!135 &5605273579647983088
 SphereCollider:
   m_ObjectHideFlags: 0

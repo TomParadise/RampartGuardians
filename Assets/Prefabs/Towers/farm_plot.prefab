@@ -481,20 +481,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upgrades:
-  - upgradeText: +50 gold per wave
-    damageUpgrade: 50
+  - upgradeText: +25 gold per wave
+    damageUpgrade: 25
     fireRateUpgrade: 0
     rangeUpgrade: 0
     piercing: 0
-    UpgradeCost: 200
+    UpgradeCost: 150
     uniqueUpgrade: 0
     switchWeaponModel: 0
-  - upgradeText: +50 gold per wave
-    damageUpgrade: 50
+  - upgradeText: +25 gold per wave
+    damageUpgrade: 25
     fireRateUpgrade: 0
     rangeUpgrade: 0
     piercing: 0
-    UpgradeCost: 200
+    UpgradeCost: 150
     uniqueUpgrade: 0
     switchWeaponModel: 0
   - upgradeText: Earn 2x gold every 3 waves
@@ -505,7 +505,7 @@ MonoBehaviour:
     UpgradeCost: 200
     uniqueUpgrade: 0
     switchWeaponModel: 0
-  startDamage: 100
+  startDamage: 50
   startFireRate: 1
   startRange: 5
   damage: 1
@@ -531,13 +531,17 @@ MonoBehaviour:
   kills: 0
   radiusScale: 4
   towerName: Farm
-  damageType: Earn +100 gold after every wave
+  damageType: Earn +50 gold after every wave
   descriptionInfo: 
   weaponModels: []
-  towerCost: 550
+  towerCost: 500
   baseProjectileCount: 1
   levelUpPanel: {fileID: 0}
   initTargeting: -1
+  placeTowerSFX: {fileID: 8300000, guid: b12c1e501b51c1340b16ba9a959678c5, type: 3}
+  snapTowerSFX: {fileID: 8300000, guid: 625ad317b451ec147984e94636d712a6, type: 3}
+  infoPopUpSFX: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
+  roundsActive: 0
 --- !u!136 &3243260843096269316
 CapsuleCollider:
   m_ObjectHideFlags: 0

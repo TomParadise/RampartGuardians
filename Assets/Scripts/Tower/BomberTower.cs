@@ -7,6 +7,7 @@ public class BomberTower : AttackingTower
     private bool upgradedBombs = false;
     public override void UpgradeTower()
     {
+        if (level - 1 == upgrades.Length) { return; }
         if (upgrades[level - 1].uniqueUpgrade != 0)
         {
             upgradedBombs = true;
@@ -30,5 +31,7 @@ public class BomberTower : AttackingTower
         projectile.gameObject.SetActive(true);
         projectile.Init(damage, range, shotSpeed, piercingProjectiles, targetEnemy.transform, effectRange * (upgradedBombs ? 2 : 1f), this);
         animator.Play("Shoot");
+
+        AudioManager.instance.PlaySFX(attackSFX);
     }
 }

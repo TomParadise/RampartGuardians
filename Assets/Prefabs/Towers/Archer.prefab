@@ -1186,6 +1186,7 @@ Transform:
   - {fileID: 8613350474803819796}
   - {fileID: 7117015713313860587}
   - {fileID: 3284736930791278594}
+  - {fileID: 6315262726561161652}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &4875888435159421952
@@ -1236,7 +1237,7 @@ MonoBehaviour:
     fireRateUpgrade: 0.1
     rangeUpgrade: 0
     piercing: 0
-    UpgradeCost: 75
+    UpgradeCost: 100
     uniqueUpgrade: 0
     switchWeaponModel: 0
   - upgradeText: Arrows pierce once
@@ -1263,6 +1264,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 3d5ab731e057da74fad2998d18e6d4c9, type: 2}
   - {fileID: 2100000, guid: 75e4265d18669ff4e967baa3cc7e5218, type: 2}
   hoverText: {fileID: 165475357144062518}
+  showingUpgradeInfo: 0
   goldValue: 300
   buffAmount: 0
   animator: {fileID: 4875888435159421952}
@@ -1282,12 +1284,17 @@ MonoBehaviour:
   baseProjectileCount: 1
   levelUpPanel: {fileID: 0}
   initTargeting: 1
+  placeTowerSFX: {fileID: 8300000, guid: b12c1e501b51c1340b16ba9a959678c5, type: 3}
+  snapTowerSFX: {fileID: 8300000, guid: 625ad317b451ec147984e94636d712a6, type: 3}
+  infoPopUpSFX: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
+  roundsActive: 0
   projectileSpawnPoint: {fileID: 8510440659481069703}
   projectileIndex: 0
   effectRange: 0
   rotateWithAttack: 1
   shotTimer: 0
   maxFireRateTimer: 1
+  attackSFX: {fileID: 8300000, guid: 5488e84677a25844280a87c08ff2be04, type: 3}
 --- !u!136 &3597508752994795611
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3158,4 +3165,35 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7282312908326906194}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &9124671105308767122
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6315262726561161652}
+  m_Layer: 0
+  m_Name: Effect Holder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6315262726561161652
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9124671105308767122}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1534195192807100026}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

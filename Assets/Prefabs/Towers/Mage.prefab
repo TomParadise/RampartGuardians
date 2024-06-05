@@ -160,6 +160,37 @@ Transform:
   - {fileID: 640372783252144027}
   m_Father: {fileID: 7220634254156611790}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &795476166830992050
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3942575953618148390}
+  m_Layer: 0
+  m_Name: Effect Holder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3942575953618148390
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795476166830992050}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7032331683203667806}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &959574671505085068
 GameObject:
   m_ObjectHideFlags: 0
@@ -2849,6 +2880,7 @@ Transform:
   - {fileID: 66176659598441081}
   - {fileID: 6775117549900601717}
   - {fileID: 97393904907199691}
+  - {fileID: 3942575953618148390}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &3996927887602715940
@@ -2891,7 +2923,7 @@ MonoBehaviour:
     fireRateUpgrade: 0
     rangeUpgrade: 0.2
     piercing: 0
-    UpgradeCost: 125
+    UpgradeCost: 100
     uniqueUpgrade: 0
     switchWeaponModel: 0
   - upgradeText: +20% fire rate
@@ -2899,18 +2931,18 @@ MonoBehaviour:
     fireRateUpgrade: 0.054
     rangeUpgrade: 0
     piercing: 0
-    UpgradeCost: 175
+    UpgradeCost: 150
     uniqueUpgrade: 0
     switchWeaponModel: 0
-  - upgradeText: +0.5s slow duration
+  - upgradeText: 2x slow duration
     damageUpgrade: 0
     fireRateUpgrade: 0
     rangeUpgrade: 0
     piercing: 0
-    UpgradeCost: 200
-    uniqueUpgrade: 0.5
+    UpgradeCost: 250
+    uniqueUpgrade: 1
     switchWeaponModel: 1
-  startDamage: 5
+  startDamage: 0
   startFireRate: 0.27
   startRange: 0.85
   damage: 1
@@ -2926,6 +2958,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 3d5ab731e057da74fad2998d18e6d4c9, type: 2}
   - {fileID: 2100000, guid: 75e4265d18669ff4e967baa3cc7e5218, type: 2}
   hoverText: {fileID: 4935869669196186196}
+  showingUpgradeInfo: 0
   goldValue: 300
   buffAmount: 0
   animator: {fileID: 3996927887602715940}
@@ -2944,13 +2977,18 @@ MonoBehaviour:
   towerCost: 450
   baseProjectileCount: 1
   levelUpPanel: {fileID: 0}
-  initTargeting: 0
+  initTargeting: -1
+  placeTowerSFX: {fileID: 8300000, guid: b12c1e501b51c1340b16ba9a959678c5, type: 3}
+  snapTowerSFX: {fileID: 8300000, guid: 625ad317b451ec147984e94636d712a6, type: 3}
+  infoPopUpSFX: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
+  roundsActive: 0
   projectileSpawnPoint: {fileID: 999061743707474119}
   projectileIndex: 0
   effectRange: 0
   rotateWithAttack: 0
   shotTimer: 0
   maxFireRateTimer: 1
+  attackSFX: {fileID: 8300000, guid: a3109c3aa7d585144b8effc2884d311c, type: 3}
 --- !u!136 &-6367532269317323950
 CapsuleCollider:
   m_ObjectHideFlags: 0

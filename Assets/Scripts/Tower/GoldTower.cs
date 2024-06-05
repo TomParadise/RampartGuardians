@@ -6,6 +6,16 @@ public class GoldTower : Tower
 {
     private int pierceCount = 0;
 
+    public override void Buff(float _buffAmount)
+    {
+        return;
+    }
+
+    public override void RemoveBuff()
+    {
+        return;
+    }
+
     public override void PlaceOnPositioner(TowerPositioner selectedPositioner, int cost)
     {
         base.PlaceOnPositioner(selectedPositioner, cost);
@@ -18,6 +28,7 @@ public class GoldTower : Tower
 
     public override void OnRoundEnd()
     {
+        base.OnRoundEnd();
         if(piercingProjectiles)
         {
             if(++pierceCount == 3) 
@@ -47,6 +58,7 @@ public class GoldTower : Tower
     }
     public override void InitUpgradeInfo()
     {
+        AudioManager.instance.PlaySFX(infoPopUpSFX);
         string upgradeInfo = "Max level";
         int upgradeCost = 0;
         if (level - 1 < upgrades.Length)
@@ -56,6 +68,12 @@ public class GoldTower : Tower
         }
         levelUpPanel = GameManager.instance.GetUIManager().InitTowerUpgradeInfo(
             this, towerName, level, "Earn +" + damage.ToString() + " gold after every wave", upgradeInfo, upgradeCost, Mathf.FloorToInt((float)goldValue * 0.8f));
+        if (levelUpPanel == null)
+        {
+            showingUpgradeInfo = false;
+            radiusObject.gameObject.SetActive(false);
+            hoverText.SetActive(false);
+        }
     }
 
     public override void UpdateUpgradeInfo()

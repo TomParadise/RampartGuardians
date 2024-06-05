@@ -5,8 +5,11 @@ using UnityEngine;
 public class Explosion : PooledObject
 {
     [SerializeField] private ParticleSystem[] systemsToScale;
+    [SerializeField] private AudioClip explosionSFX;
+
     public void Init(float damage, float range, Tower attackingTower)
     {
+        AudioManager.instance.PlaySFX(explosionSFX);
         transform.localScale = Vector3.one * range * 0.75f;
         for (int i = 0; i < systemsToScale.Length; i++)
         {

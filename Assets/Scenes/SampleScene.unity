@@ -938,6 +938,22 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 259910017}
+          m_TargetAssemblyTypeName: TowerButton, Assembly-CSharp
+          m_MethodName: OnPointerDown
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &259910019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1895,6 +1911,22 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 457087785}
+          m_TargetAssemblyTypeName: TowerButton, Assembly-CSharp
+          m_MethodName: OnPointerDown
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &457087787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2040,6 +2072,22 @@ MonoBehaviour:
         - m_Target: {fileID: 460515528}
           m_TargetAssemblyTypeName: TowerButton, Assembly-CSharp
           m_MethodName: OnDrag
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 460515528}
+          m_TargetAssemblyTypeName: TowerButton, Assembly-CSharp
+          m_MethodName: OnPointerDown
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -2697,6 +2745,90 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1068998163}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &760149280
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 760149283}
+  - component: {fileID: 760149282}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &760149282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 760149280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3165bbecc56d9ef489efa9244cc007f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mixer: {fileID: 24100000, guid: b22094422a8840a46a1b605a0dd63715, type: 2}
+  battleMusicSource: {fileID: 909717344}
+  planningMusicSource: {fileID: 1920013466}
+  battleMusicClips:
+  - {fileID: 8300000, guid: 457771d0864a67842a71c2fb0a3fdc1a, type: 3}
+  - {fileID: 8300000, guid: 42473177e27deec47a049056af08c108, type: 3}
+  - {fileID: 8300000, guid: 3743191223aa7884aa5f127d9f41d978, type: 3}
+  - {fileID: 8300000, guid: b7501a20c06ef20469c1419fea37f021, type: 3}
+  - {fileID: 8300000, guid: a06bfa24fcd25ac47b8c84f5485a0f9d, type: 3}
+  - {fileID: 8300000, guid: 6ef0f2320ce6c6d45a5940dd38e5b9a9, type: 3}
+  - {fileID: 8300000, guid: 50410ad3e8416d947a9b3bc18aedc67a, type: 3}
+  - {fileID: 8300000, guid: b5bc10f4d9bd65243b56e20218638cf8, type: 3}
+  - {fileID: 8300000, guid: 1e69668668d2d7a4ea120ecf74357ba9, type: 3}
+  - {fileID: 8300000, guid: d721df7dc685e7c46a01fd7f763d713f, type: 3}
+  - {fileID: 8300000, guid: d721df7dc685e7c46a01fd7f763d713f, type: 3}
+  planningMusicClips:
+  - {fileID: 8300000, guid: f84b899600c724440bfd5e1b89b85b2c, type: 3}
+  - {fileID: 8300000, guid: 6a91d615a28374bdf8fa0f38c5c8dfce, type: 3}
+  - {fileID: 8300000, guid: 3f68c8e04deed0a40b0803bf526cc440, type: 3}
+  - {fileID: 8300000, guid: d0431226b1302a74d82093c5de32235e, type: 3}
+  - {fileID: 8300000, guid: 92c32bab51f7a704688f209cd556ed8b, type: 3}
+  - {fileID: 8300000, guid: 15da5483de7d548488a1e6e4978599ea, type: 3}
+  - {fileID: 8300000, guid: 049abaaa0b6350b4181c080313e27ec1, type: 3}
+  - {fileID: 8300000, guid: bda4649832106be47be70035ee91db08, type: 3}
+  - {fileID: 8300000, guid: 4fe1e130dcac2ca45b60fe5f42fd2d23, type: 3}
+  - {fileID: 8300000, guid: af9ea40d122f11146b197c2bb6bb2ff5, type: 3}
+  - {fileID: 8300000, guid: af9ea40d122f11146b197c2bb6bb2ff5, type: 3}
+  buttonClips:
+  - {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
+  - {fileID: 8300000, guid: 724131bc8a7f34041bb9f1701f0cb58d, type: 3}
+  - {fileID: 8300000, guid: 0c008ee3ee72a4362a35be25fa5de043, type: 3}
+  - {fileID: 8300000, guid: cad11a4481c77fe4aabeb5563cb0bd6c, type: 3}
+  - {fileID: 8300000, guid: f86684ac4f9d3104f8b340c597107228, type: 3}
+  notEnoughGoldClip: {fileID: 8300000, guid: d8d04c6f80a1140db85ede568dab1f51, type: 3}
+  sfxPrefab: {fileID: 8118180865015391766, guid: eddb20db3ef39d04081216a40b46f4e4, type: 3}
+  masterVolume: 1
+  sfxVolume: 1
+  musicVolume: 1
+--- !u!4 &760149283
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 760149280}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 909717345}
+  - {fileID: 1920013467}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &760786837
 GameObject:
   m_ObjectHideFlags: 0
@@ -3048,6 +3180,135 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1068998163}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &909717343
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 909717345}
+  - component: {fileID: 909717344}
+  m_Layer: 0
+  m_Name: Battle Music Source
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &909717344
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 909717343}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -1561968600949477341, guid: b22094422a8840a46a1b605a0dd63715, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &909717345
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 909717343}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 760149283}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &937499891
 GameObject:
   m_ObjectHideFlags: 0
@@ -3230,6 +3491,22 @@ MonoBehaviour:
         - m_Target: {fileID: 957725917}
           m_TargetAssemblyTypeName: TowerButton, Assembly-CSharp
           m_MethodName: OnDrag
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 957725917}
+          m_TargetAssemblyTypeName: TowerButton, Assembly-CSharp
+          m_MethodName: OnPointerDown
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -3499,6 +3776,22 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1010843199}
+          m_TargetAssemblyTypeName: TowerButton, Assembly-CSharp
+          m_MethodName: OnPointerDown
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &1010843201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3637,13 +3930,29 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - eventID: 13
+  - eventID: 5
     callback:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1023259718}
           m_TargetAssemblyTypeName: TowerButton, Assembly-CSharp
           m_MethodName: OnDrag
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1023259718}
+          m_TargetAssemblyTypeName: TowerButton, Assembly-CSharp
+          m_MethodName: OnPointerDown
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -3907,6 +4216,8 @@ MonoBehaviour:
   - {fileID: 3393100045138734304, guid: f0566f4d22beb24429b2d98f5f4a1022, type: 3}
   - {fileID: 1479955809613637117, guid: 808253cdcc5378b4e95989b521d76d27, type: 3}
   - {fileID: 5629564654967045081, guid: 18a16e39d91d6b64cbc9d0b932efbe1e, type: 3}
+  - {fileID: 5093953707291374167, guid: 57dbfa5ea96b27b40a7c3439d310e98e, type: 3}
+  - {fileID: 483486713219515556, guid: bc1c3761129d84c45bf4a1e28805271e, type: 3}
   goldPopUpPrefab: {fileID: 5134634298401375177, guid: cf908e6b235fcd94ca93c226d20438ea, type: 3}
   damagePopUpPrefab: {fileID: 7685300108041556742, guid: 6a9cd610d6aa61a499358f52557de4be, type: 3}
   HPDamagePrefab: {fileID: 5719687736922763701, guid: 13b26b53aba1c444190ed998a15801e7, type: 3}
@@ -3916,32 +4227,25 @@ MonoBehaviour:
       enemyCount: 8
   - enemySpawnInfos:
     - enemyType: 0
-      enemyCount: 9
-  - enemySpawnInfos:
-    - enemyType: 0
       enemyCount: 10
   - enemySpawnInfos:
     - enemyType: 0
-      enemyCount: 9
+      enemyCount: 12
+  - enemySpawnInfos:
+    - enemyType: 0
+      enemyCount: 10
     - enemyType: 1
       enemyCount: 2
-  - enemySpawnInfos:
-    - enemyType: 0
-      enemyCount: 10
-    - enemyType: 1
-      enemyCount: 3
-  - enemySpawnInfos:
-    - enemyType: 0
-      enemyCount: 11
-    - enemyType: 1
-      enemyCount: 4
   - enemySpawnInfos:
     - enemyType: 0
       enemyCount: 12
     - enemyType: 1
       enemyCount: 3
-    - enemyType: 3
-      enemyCount: 1
+  - enemySpawnInfos:
+    - enemyType: 0
+      enemyCount: 14
+    - enemyType: 1
+      enemyCount: 5
   - enemySpawnInfos:
     - enemyType: 0
       enemyCount: 14
@@ -3953,163 +4257,325 @@ MonoBehaviour:
     - enemyType: 0
       enemyCount: 14
     - enemyType: 1
-      enemyCount: 5
+      enemyCount: 6
+    - enemyType: 3
+      enemyCount: 1
+  - enemySpawnInfos:
+    - enemyType: 0
+      enemyCount: 15
+    - enemyType: 1
+      enemyCount: 6
     - enemyType: 3
       enemyCount: 2
   - enemySpawnInfos:
     - enemyType: 0
-      enemyCount: 10
+      enemyCount: 9
     - enemyType: 1
-      enemyCount: 5
+      enemyCount: 7
     - enemyType: 4
       enemyCount: 1
     - enemyType: 7
       enemyCount: 3
-  - enemySpawnInfos:
-    - enemyType: 0
-      enemyCount: 10
-    - enemyType: 1
-      enemyCount: 5
-    - enemyType: 4
-      enemyCount: 1
-    - enemyType: 7
-      enemyCount: 5
-  - enemySpawnInfos:
-    - enemyType: 0
-      enemyCount: 10
-    - enemyType: 1
-      enemyCount: 6
-    - enemyType: 4
-      enemyCount: 2
-    - enemyType: 7
-      enemyCount: 5
   - enemySpawnInfos:
     - enemyType: 0
       enemyCount: 8
     - enemyType: 1
-      enemyCount: 6
-    - enemyType: 2
-      enemyCount: 1
-    - enemyType: 7
-      enemyCount: 5
-  - enemySpawnInfos:
-    - enemyType: 0
-      enemyCount: 7
-    - enemyType: 1
-      enemyCount: 6
-    - enemyType: 2
-      enemyCount: 1
-    - enemyType: 7
-      enemyCount: 6
-    - enemyType: 3
-      enemyCount: 1
-  - enemySpawnInfos:
-    - enemyType: 0
-      enemyCount: 4
-    - enemyType: 1
-      enemyCount: 6
-    - enemyType: 2
-      enemyCount: 1
-    - enemyType: 7
       enemyCount: 10
-    - enemyType: 3
-      enemyCount: 2
-  - enemySpawnInfos:
-    - enemyType: 6
+    - enemyType: 4
       enemyCount: 1
+    - enemyType: 7
+      enemyCount: 6
   - enemySpawnInfos:
     - enemyType: 1
-      enemyCount: 20
-  - enemySpawnInfos:
-    - enemyType: 7
-      enemyCount: 10
-    - enemyType: 1
-      enemyCount: 10
-    - enemyType: 3
-      enemyCount: 2
-  - enemySpawnInfos:
-    - enemyType: 5
-      enemyCount: 1
-  - enemySpawnInfos:
-    - enemyType: 7
       enemyCount: 12
-    - enemyType: 1
-      enemyCount: 7
-    - enemyType: 8
-      enemyCount: 3
-  - enemySpawnInfos:
-    - enemyType: 7
-      enemyCount: 12
-    - enemyType: 1
-      enemyCount: 6
-    - enemyType: 8
-      enemyCount: 4
     - enemyType: 4
       enemyCount: 2
-  - enemySpawnInfos:
-    - enemyType: 9
-      enemyCount: 2
-    - enemyType: 3
-      enemyCount: 3
-  - enemySpawnInfos:
     - enemyType: 7
-      enemyCount: 15
-    - enemyType: 8
+      enemyCount: 7
+  - enemySpawnInfos:
+    - enemyType: 0
+      enemyCount: 8
+    - enemyType: 1
+      enemyCount: 8
+    - enemyType: 2
+      enemyCount: 1
+    - enemyType: 7
+      enemyCount: 8
+  - enemySpawnInfos:
+    - enemyType: 0
+      enemyCount: 7
+    - enemyType: 1
+      enemyCount: 10
+    - enemyType: 2
+      enemyCount: 1
+    - enemyType: 7
       enemyCount: 8
     - enemyType: 3
       enemyCount: 2
   - enemySpawnInfos:
-    - enemyType: 7
-      enemyCount: 15
-    - enemyType: 8
+    - enemyType: 0
+      enemyCount: 5
+    - enemyType: 1
       enemyCount: 10
-    - enemyType: 4
+    - enemyType: 2
+      enemyCount: 2
+    - enemyType: 7
+      enemyCount: 10
+    - enemyType: 3
+      enemyCount: 2
+  - enemySpawnInfos:
+    - enemyType: 6
+      enemyCount: 1
+  - enemySpawnInfos:
+    - enemyType: 1
+      enemyCount: 30
+  - enemySpawnInfos:
+    - enemyType: 7
+      enemyCount: 10
+    - enemyType: 1
+      enemyCount: 10
+    - enemyType: 3
       enemyCount: 3
+    - enemyType: 8
+      enemyCount: 6
+    - enemyType: 2
+      enemyCount: 1
   - enemySpawnInfos:
     - enemyType: 5
       enemyCount: 1
-    - enemyType: 6
-      enemyCount: 1
   - enemySpawnInfos:
-    - enemyType: 8
-      enemyCount: 12
-    - enemyType: 10
-      enemyCount: 3
     - enemyType: 7
       enemyCount: 15
-  - enemySpawnInfos:
+    - enemyType: 1
+      enemyCount: 4
     - enemyType: 8
-      enemyCount: 12
-    - enemyType: 10
+      enemyCount: 10
+    - enemyType: 3
       enemyCount: 2
+  - enemySpawnInfos:
     - enemyType: 7
-      enemyCount: 15
+      enemyCount: 14
+    - enemyType: 8
+      enemyCount: 10
+    - enemyType: 4
+      enemyCount: 2
+  - enemySpawnInfos:
     - enemyType: 2
-      enemyCount: 5
-  - enemySpawnInfos:
-    - enemyType: 6
       enemyCount: 3
-    - enemyType: 0
-      enemyCount: 25
+    - enemyType: 3
+      enemyCount: 4
+    - enemyType: 4
+      enemyCount: 2
   - enemySpawnInfos:
     - enemyType: 7
-      enemyCount: 25
+      enemyCount: 17
+    - enemyType: 8
+      enemyCount: 13
+    - enemyType: 3
+      enemyCount: 2
     - enemyType: 10
       enemyCount: 2
-    - enemyType: 9
-      enemyCount: 3
+    - enemyType: 2
+      enemyCount: 1
   - enemySpawnInfos:
     - enemyType: 7
       enemyCount: 20
     - enemyType: 8
-      enemyCount: 5
-    - enemyType: 5
-      enemyCount: 1
+      enemyCount: 15
+    - enemyType: 4
+      enemyCount: 3
     - enemyType: 10
       enemyCount: 2
+  - enemySpawnInfos:
+    - enemyType: 5
+      enemyCount: 1
+    - enemyType: 6
+      enemyCount: 1
+  - enemySpawnInfos:
+    - enemyType: 8
+      enemyCount: 25
+    - enemyType: 10
+      enemyCount: 5
+    - enemyType: 7
+      enemyCount: 20
+  - enemySpawnInfos:
+    - enemyType: 7
+      enemyCount: 25
+    - enemyType: 8
+      enemyCount: 20
+    - enemyType: 10
+      enemyCount: 5
+    - enemyType: 2
+      enemyCount: 2
+  - enemySpawnInfos:
+    - enemyType: 6
+      enemyCount: 3
+    - enemyType: 8
+      enemyCount: 10
+  - enemySpawnInfos:
+    - enemyType: 7
+      enemyCount: 35
+    - enemyType: 10
+      enemyCount: 4
+    - enemyType: 9
+      enemyCount: 3
+  - enemySpawnInfos:
+    - enemyType: 7
+      enemyCount: 30
+    - enemyType: 8
+      enemyCount: 10
+    - enemyType: 9
+      enemyCount: 4
+    - enemyType: 10
+      enemyCount: 4
+  - enemySpawnInfos:
+    - enemyType: 5
+      enemyCount: 3
+    - enemyType: 10
+      enemyCount: 5
+  - enemySpawnInfos:
+    - enemyType: 4
+      enemyCount: 5
+    - enemyType: 10
+      enemyCount: 6
+    - enemyType: 9
+      enemyCount: 4
+  - enemySpawnInfos:
+    - enemyType: 7
+      enemyCount: 20
+    - enemyType: 8
+      enemyCount: 25
+    - enemyType: 9
+      enemyCount: 4
   - enemySpawnInfos:
     - enemyType: 11
       enemyCount: 1
+  - enemySpawnInfos:
+    - enemyType: 8
+      enemyCount: 40
+    - enemyType: 10
+      enemyCount: 5
+  - enemySpawnInfos:
+    - enemyType: 7
+      enemyCount: 15
+    - enemyType: 8
+      enemyCount: 20
+    - enemyType: 6
+      enemyCount: 1
+  - enemySpawnInfos:
+    - enemyType: 11
+      enemyCount: 1
+    - enemyType: 6
+      enemyCount: 2
+  - enemySpawnInfos:
+    - enemyType: 7
+      enemyCount: 25
+    - enemyType: 8
+      enemyCount: 20
+    - enemyType: 5
+      enemyCount: 1
+    - enemyType: 10
+      enemyCount: 4
+    - enemyType: 9
+      enemyCount: 1
+  - enemySpawnInfos:
+    - enemyType: 7
+      enemyCount: 25
+    - enemyType: 8
+      enemyCount: 25
+    - enemyType: 6
+      enemyCount: 1
+    - enemyType: 10
+      enemyCount: 4
+    - enemyType: 9
+      enemyCount: 1
+  - enemySpawnInfos:
+    - enemyType: 11
+      enemyCount: 2
+  - enemySpawnInfos:
+    - enemyType: 8
+      enemyCount: 40
+    - enemyType: 10
+      enemyCount: 4
+    - enemyType: 5
+      enemyCount: 2
+  - enemySpawnInfos:
+    - enemyType: 9
+      enemyCount: 5
+    - enemyType: 6
+      enemyCount: 2
+    - enemyType: 10
+      enemyCount: 10
+  - enemySpawnInfos:
+    - enemyType: 11
+      enemyCount: 1
+    - enemyType: 6
+      enemyCount: 1
+    - enemyType: 5
+      enemyCount: 2
+  - enemySpawnInfos:
+    - enemyType: 8
+      enemyCount: 40
+    - enemyType: 5
+      enemyCount: 2
+  - enemySpawnInfos:
+    - enemyType: 7
+      enemyCount: 20
+    - enemyType: 8
+      enemyCount: 20
+    - enemyType: 4
+      enemyCount: 5
+    - enemyType: 10
+      enemyCount: 5
+    - enemyType: 9
+      enemyCount: 5
+  - enemySpawnInfos:
+    - enemyType: 11
+      enemyCount: 2
+    - enemyType: 6
+      enemyCount: 2
+  - enemySpawnInfos:
+    - enemyType: 4
+      enemyCount: 20
+    - enemyType: 5
+      enemyCount: 3
+    - enemyType: 10
+      enemyCount: 5
+    - enemyType: 9
+      enemyCount: 2
+  - enemySpawnInfos:
+    - enemyType: 7
+      enemyCount: 20
+    - enemyType: 8
+      enemyCount: 25
+    - enemyType: 9
+      enemyCount: 7
+    - enemyType: 10
+      enemyCount: 10
+  - enemySpawnInfos:
+    - enemyType: 7
+      enemyCount: 25
+    - enemyType: 8
+      enemyCount: 30
+    - enemyType: 11
+      enemyCount: 3
+    - enemyType: 10
+      enemyCount: 10
+  - enemySpawnInfos:
+    - enemyType: 7
+      enemyCount: 20
+    - enemyType: 8
+      enemyCount: 25
+    - enemyType: 11
+      enemyCount: 3
+    - enemyType: 6
+      enemyCount: 3
+    - enemyType: 10
+      enemyCount: 5
+    - enemyType: 4
+      enemyCount: 4
+    - enemyType: 9
+      enemyCount: 2
   currentSpawnGroup:
     enemySpawnInfos: []
   enemyHolder: {fileID: 1982196706}
@@ -4127,6 +4593,7 @@ MonoBehaviour:
   buffingTowers: []
   towers: []
   enemies: []
+  startWaveSFX: {fileID: 8300000, guid: 4f76fbf4e2f844cea824015a2aecae9a, type: 3}
 --- !u!4 &1068998163
 Transform:
   m_ObjectHideFlags: 0
@@ -5187,6 +5654,22 @@ MonoBehaviour:
         - m_Target: {fileID: 1314531615}
           m_TargetAssemblyTypeName: TowerButton, Assembly-CSharp
           m_MethodName: OnDrag
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1314531615}
+          m_TargetAssemblyTypeName: TowerButton, Assembly-CSharp
+          m_MethodName: OnPointerDown
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -6483,6 +6966,22 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1715834956}
+          m_TargetAssemblyTypeName: TowerButton, Assembly-CSharp
+          m_MethodName: OnPointerDown
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &1715834958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7016,6 +7515,135 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!1 &1920013465
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1920013467}
+  - component: {fileID: 1920013466}
+  m_Layer: 0
+  m_Name: Planning Music Source
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &1920013466
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1920013465}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -1561968600949477341, guid: b22094422a8840a46a1b605a0dd63715, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &1920013467
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1920013465}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 760149283}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1982196705
 GameObject:
   m_ObjectHideFlags: 0
@@ -7432,3 +8060,4 @@ SceneRoots:
   - {fileID: 1068998163}
   - {fileID: 1672968226}
   - {fileID: 1306342018}
+  - {fileID: 760149283}

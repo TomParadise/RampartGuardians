@@ -8,8 +8,11 @@ public class SplittingEnemy : Enemy
     {
         Vector3 spawnPos = transform.position;
         spawnPos.y = targetTile.transform.position.y;
-        GameManager.instance.SpawnEnemy(GameManager.EnemyTypes.Standard,spawnPos + transform.forward * 0.025f, targetTile);
-        GameManager.instance.SpawnEnemy(GameManager.EnemyTypes.Standard, spawnPos - transform.forward * 0.025f, targetTile);
+        GameManager.EnemyTypes type = GameManager.EnemyTypes.Standard;
+        if(GameManager.instance.stageCount > 20) { type = GameManager.EnemyTypes.EliteStandard; }
+        if(GameManager.instance.stageCount > 40) { type = GameManager.EnemyTypes.EliteRogue; }
+        GameManager.instance.SpawnEnemy(type, spawnPos + transform.forward * 0.025f, targetTile);
+        GameManager.instance.SpawnEnemy(type, spawnPos - transform.forward * 0.025f, targetTile);
         base.Kill();
     }
 }

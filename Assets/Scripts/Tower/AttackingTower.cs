@@ -11,6 +11,8 @@ public class AttackingTower : Tower
 
     public float shotTimer = 0;
     public float maxFireRateTimer = 1;
+
+    [SerializeField] public AudioClip attackSFX;
     public void SetTargeting(TargetType _targetType)
     {
         targetType = _targetType;
@@ -18,6 +20,7 @@ public class AttackingTower : Tower
 
     public override void OnRoundEnd()
     {
+        base.OnRoundEnd();
         shotTimer = 0;
     }
 
@@ -86,40 +89,43 @@ public class AttackingTower : Tower
         float targetVal = (targetType == TargetType.First || targetType == TargetType.Last) ? targetEnemy.GetDistanceToGoal() : (targetEnemy.currentHP);
         foreach (Collider col in cols)
         {
+            Enemy colEnemy = col.GetComponent<Enemy>();
             if (targetType == TargetType.First)
             {
-                float dist = col.GetComponent<Enemy>().GetDistanceToGoal();
+                float dist = colEnemy.GetDistanceToGoal();
                 if (dist < targetVal)
                 {
                     targetVal = dist;
-                    targetEnemy = col.GetComponent<Enemy>();
+                    targetEnemy = colEnemy;
                 }
             }
             else if (targetType == TargetType.Last)
             {
-                float dist = col.GetComponent<Enemy>().GetDistanceToGoal();
+                float dist = colEnemy.GetDistanceToGoal();
                 if (dist > targetVal)
                 {
                     targetVal = dist;
-                    targetEnemy = col.GetComponent<Enemy>();
+                    targetEnemy = colEnemy;
                 }
             }
             else if (targetType == TargetType.HighestHP)
             {
-                float HP = col.GetComponent<Enemy>().currentHP;
-                if (HP > targetVal)
+                float HP = colEnemy.currentHP;
+                if (HP > targetVal 
+                    || (HP == targetVal && colEnemy.GetDistanceToGoal() < targetEnemy.GetDistanceToGoal()))
                 {
                     targetVal = HP;
-                    targetEnemy = col.GetComponent<Enemy>();
+                    targetEnemy = colEnemy;
                 }
             }
             else if (targetType == TargetType.LowestHP)
             {
-                float HP = col.GetComponent<Enemy>().currentHP;
-                if (HP < targetVal)
+                float HP = colEnemy.currentHP;
+                if (HP < targetVal
+                    || (HP == targetVal && colEnemy.GetDistanceToGoal() < targetEnemy.GetDistanceToGoal()))
                 {
                     targetVal = HP;
-                    targetEnemy = col.GetComponent<Enemy>();
+                    targetEnemy = colEnemy;
                 }
             }
         }
@@ -136,5 +142,7 @@ public class AttackingTower : Tower
         projectile.gameObject.SetActive(true);
         projectile.Init(damage, range, shotSpeed, piercingProjectiles, targetEnemy.transform, effectRange, this);
         animator.Play("Shoot");
+
+        AudioManager.instance.PlaySFX(attackSFX);
     }
 }
