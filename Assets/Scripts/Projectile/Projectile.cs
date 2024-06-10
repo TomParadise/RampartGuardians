@@ -20,6 +20,7 @@ public class Projectile : PooledObject
     public Vector3 rotateVector;
 
     [SerializeField] private Transform rotateObject;
+    [SerializeField] private TrailRenderer trail;
 
     public void Init(float _damage, float _maxRange, float _speed, bool _piercing, Transform _target, float _effectRange, Tower _parentTower)
     {
@@ -97,6 +98,7 @@ public class Projectile : PooledObject
     public override void ResetObject()
     {
         hitbox.enabled = true;
+        if (trail != null) { trail.Clear(); }
         base.ResetObject();
     }
 }

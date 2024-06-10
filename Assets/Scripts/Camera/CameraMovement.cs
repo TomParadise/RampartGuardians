@@ -19,6 +19,8 @@ public class CameraMovement : MonoBehaviour
 
     private Coroutine scrollIconCo = null;
 
+    public bool canMove = true;
+
     public void ResetPos()
     {
         Vector3 pos = transform.position;
@@ -45,7 +47,7 @@ public class CameraMovement : MonoBehaviour
 
     private void Update()
     {
-        if (!holdingTower) { return; }
+        if (!holdingTower || !canMove) { return; }
         Vector2 mousePos = Input.mousePosition;
         Vector3 forward = Quaternion.Euler(0, cam.transform.eulerAngles.y, 0) * Vector3.forward;
         Vector3 right = cam.transform.right;
@@ -84,6 +86,8 @@ public class CameraMovement : MonoBehaviour
 
     public void OnPointerUp(BaseEventData bed)
     {
+        if (!canMove) { return; }
+
         PointerEventData ped = (PointerEventData)bed;
         //left button moves the camera
         if (ped.pointerId == -1)
@@ -103,6 +107,8 @@ public class CameraMovement : MonoBehaviour
 
     public void OnPointerDown(BaseEventData bed)
     {
+        if (!canMove) { return; }
+
         PointerEventData ped = (PointerEventData)bed;
         //left mouse button
         if(ped.pointerId == -1)
@@ -133,6 +139,8 @@ public class CameraMovement : MonoBehaviour
 
     public void OnPointerDrag(BaseEventData bed)
     {
+        if (!canMove) { return; }
+
         PointerEventData ped = (PointerEventData)bed;
         //left button moves the camera
         if (ped.pointerId == -1)
@@ -155,6 +163,8 @@ public class CameraMovement : MonoBehaviour
 
     public void OnScroll(BaseEventData bed)
     {
+        if (!canMove) { return; }
+
         PointerEventData ped = (PointerEventData)bed;
         if (ped.scrollDelta.y != 0)
         {

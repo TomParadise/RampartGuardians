@@ -50,7 +50,7 @@ public class BuffingTower : Tower
             upgradeCost = upgrades[level - 1].UpgradeCost;
         }
         levelUpPanel = GameManager.instance.GetUIManager().InitTowerUpgradeInfo(
-            this, towerName, level, "Grant +" + (100 * damage).ToString() + "% fire rate to towers in range", upgradeInfo, upgradeCost, Mathf.FloorToInt((float)goldValue * 0.8f));
+            this, towerName, level, "Grant +" + (100 * damage).ToString() + "% fire rate to towers in range", upgradeInfo, upgradeCost, goldValue);
         if (levelUpPanel == null)
         {
             showingUpgradeInfo = false;
@@ -71,7 +71,7 @@ public class BuffingTower : Tower
                 upgradeCost = upgrades[level - 1].UpgradeCost;
             }
             levelUpPanel.Init(
-            this, towerName, level, "Grant +" + (100 * damage).ToString() + "% fire rate to towers in range", upgradeInfo, upgradeCost, Mathf.FloorToInt((float)goldValue * 0.8f));
+            this, towerName, level, "Grant +" + (100 * damage).ToString() + "% fire rate to towers in range", upgradeInfo, upgradeCost, goldValue);
         }
     }
 

@@ -4,6 +4,11 @@ using UnityEngine;
 
 public static class RandomHelpers
 {
+    public static int GenerateRandomSign(float positiveChance = 0.5f)
+    {
+        return Random.value < positiveChance ? -1 : 1;
+    }
+
     //generates a random list of ints between min(inclusive) and max(exclusive)
     //ignore parameter will not be included in the list
     public static List<int> GenerateRandomList(int min, int max, int? ignore = null)

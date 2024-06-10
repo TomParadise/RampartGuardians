@@ -161,10 +161,8 @@ public class AudioManager : MonoSingleton<AudioManager>
     public void ChangeMasterVolume(float val)
     {
         masterVolume = val;
-        mixer.GetFloat("MasterVolume", out float printval);
         if (masterVolume == 0.0001f) { mixer.SetFloat("MasterVolume", -80); }
         else { mixer.SetFloat("MasterVolume", Mathf.Log10(val) * 20); }
-        mixer.GetFloat("MasterVolume", out float secondprintval);
     }
     public void ChangeSFXVolume(float val)
     {

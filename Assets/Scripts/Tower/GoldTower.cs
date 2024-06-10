@@ -67,7 +67,7 @@ public class GoldTower : Tower
             upgradeCost = upgrades[level - 1].UpgradeCost;
         }
         levelUpPanel = GameManager.instance.GetUIManager().InitTowerUpgradeInfo(
-            this, towerName, level, "Earn +" + damage.ToString() + " gold after every wave", upgradeInfo, upgradeCost, Mathf.FloorToInt((float)goldValue * 0.8f));
+            this, towerName, level, "Earn +" + damage.ToString() + " gold after every wave", upgradeInfo, upgradeCost, goldValue);
         if (levelUpPanel == null)
         {
             showingUpgradeInfo = false;
@@ -88,7 +88,7 @@ public class GoldTower : Tower
                 upgradeCost = upgrades[level - 1].UpgradeCost;
             }
             levelUpPanel.Init(
-            this, towerName, level, "Earn +" + damage.ToString() + " gold after every wave", upgradeInfo, upgradeCost, Mathf.FloorToInt((float)goldValue * 0.8f));
+            this, towerName, level, "Earn +" + damage.ToString() + " gold after every wave", upgradeInfo, upgradeCost, goldValue);
         }
     }
 

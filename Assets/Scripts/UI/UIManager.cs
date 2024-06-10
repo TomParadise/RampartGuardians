@@ -20,8 +20,15 @@ public class UIManager : MonoBehaviour
     [SerializeField] private WaveCompletedPanel waveCompletedPanel;
     [SerializeField] private EnemyHPDisplay enemyHPDisplay;
     [SerializeField] private TowerPurchasePanel towerPurchasePanel;
+    [SerializeField] private PauseUI pauseUI;
     private TowerLevelUpPanel activeUpgradePanel = null;
     private Coroutine skyColourCo = null;
+
+    public PauseUI GetPauseMenu() { return pauseUI; }
+
+    public void OpenPauseUI() { pauseUI.OpenPauseUI(); }
+
+    public void ClosePauseUI() { pauseUI.ClosePauseUI(); }
 
     public TowerPanelUI GetTowerPanel() { return towerPanelUI; }
 
@@ -32,6 +39,7 @@ public class UIManager : MonoBehaviour
         timeCycleImages[1].CrossFadeAlpha(0f, 0f, true);
         timeCycleImages[0].CrossFadeAlpha(1f, 0f, true);
         timeCycleImages[0].transform.SetAsFirstSibling();
+        pauseUI.gameObject.SetActive(true);
     }
 
     public void ShowTowerPurchaseInfo(int towerIndex)

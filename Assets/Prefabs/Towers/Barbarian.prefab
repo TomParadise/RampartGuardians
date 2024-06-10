@@ -1523,9 +1523,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upgrades:
-  - upgradeText: +10% fire rate
+  - upgradeText: +12.5% fire rate
     damageUpgrade: 0
-    fireRateUpgrade: 0.02
+    fireRateUpgrade: 0.025
     rangeUpgrade: 0
     piercing: 0
     UpgradeCost: 150

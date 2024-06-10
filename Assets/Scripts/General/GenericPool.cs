@@ -56,4 +56,16 @@ public class GenericPool : MonoBehaviour
         _object.DestroyFromPool();
         Destroy(_object.gameObject);
     }
+
+    public void ReleaseChildren()
+    {
+        int childCount = transform.childCount;
+        for(int i = 0; i < childCount; i++)
+        {
+            if (transform.GetChild(i).gameObject.activeInHierarchy)
+            {
+                transform.GetChild(i).GetComponent<PooledObject>().Release();
+            }
+        }
+    }
 }

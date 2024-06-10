@@ -1183,9 +1183,9 @@ MonoBehaviour:
     UpgradeCost: 75
     uniqueUpgrade: 0
     switchWeaponModel: 0
-  - upgradeText: +20% fire rate
+  - upgradeText: +10% fire rate
     damageUpgrade: 0
-    fireRateUpgrade: 0.104
+    fireRateUpgrade: 0.059
     rangeUpgrade: 0
     piercing: 0
     UpgradeCost: 100
@@ -1200,7 +1200,7 @@ MonoBehaviour:
     uniqueUpgrade: 0
     switchWeaponModel: 1
   startDamage: 10
-  startFireRate: 0.52
+  startFireRate: 0.59
   startRange: 0.8
   damage: 1
   fireRate: 1

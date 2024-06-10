@@ -662,17 +662,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upgrades:
-  - upgradeText: +1.5m range
+  - upgradeText: +2m range
     damageUpgrade: 0
     fireRateUpgrade: 0
-    rangeUpgrade: 0.75
+    rangeUpgrade: 1
     piercing: 0
     UpgradeCost: 100
     uniqueUpgrade: 0
     switchWeaponModel: 0
-  - upgradeText: +25% fire rate
+  - upgradeText: +15% fire rate
     damageUpgrade: 0
-    fireRateUpgrade: 0.075
+    fireRateUpgrade: 0.0525
     rangeUpgrade: 0
     piercing: 0
     UpgradeCost: 200
@@ -687,7 +687,7 @@ MonoBehaviour:
     uniqueUpgrade: 0.5
     switchWeaponModel: 0
   startDamage: 10
-  startFireRate: 0.3
+  startFireRate: 0.35
   startRange: 1.75
   damage: 1
   fireRate: 1

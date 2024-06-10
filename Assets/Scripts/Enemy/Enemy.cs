@@ -45,6 +45,8 @@ public class Enemy : PooledObject
     [SerializeField] private AudioClip hitTowerSFX;
     [SerializeField] private AudioClip takeDamageSFX;
 
+    public List<BuffingEnemy> nearbyBuffers = new List<BuffingEnemy>();
+
     public void TogglePause(bool paused) { animator.speed = paused ? 0 : 1; }
 
     public override void ResetObject()
@@ -58,6 +60,7 @@ public class Enemy : PooledObject
         buffed = false;
         slowed = false;
         ReleaseBuffEffect();
+        nearbyBuffers.Clear();
         base.ResetObject();
     }
 
@@ -95,10 +98,10 @@ public class Enemy : PooledObject
         }
     }
 
-    public void CheckForBuffingAoEs(GameObject avoidEnemy)
+    public void CheckForBuffingAoEs(BuffingEnemy avoidEnemy)
     {
-        Collider[] cols = Physics.OverlapSphere(transform.position, 0.5f, 1 << 12);
-        if (cols == null || cols.Length == 0 || (cols.Length == 1 && cols[0].gameObject == avoidEnemy))
+        if (nearbyBuffers.Contains(avoidEnemy)) { nearbyBuffers.Remove(avoidEnemy); }
+        if(nearbyBuffers.Count == 0)
         {
             SetBuffedSpeed(false);
             buffed = false;
@@ -118,11 +121,14 @@ public class Enemy : PooledObject
 
     private IEnumerator SlowDownCo(float duration)
     {
-        slowEffect = GameManager.instance.GetEffect(7).GetComponent<PooledObject>();
-        slowEffect.transform.SetParent(transform);
-        slowEffect.transform.SetAsFirstSibling();
-        slowEffect.transform.localPosition = Vector3.zero;
-        slowEffect.gameObject.SetActive(true);
+        if (slowEffect != null)
+        {
+            slowEffect = GameManager.instance.GetEffect(7).GetComponent<PooledObject>();
+            slowEffect.transform.SetParent(transform);
+            slowEffect.transform.SetAsFirstSibling();
+            slowEffect.transform.localPosition = Vector3.zero;
+            slowEffect.gameObject.SetActive(true);
+        }
         slowed = true;
         SetSlowedSpeed(true);
         slowTimer = 0;
@@ -136,12 +142,17 @@ public class Enemy : PooledObject
         }
         SetSlowedSpeed(false);
         slowed = false;
-        if (slowEffect != null) { slowEffect.Release(); }
+        if (slowEffect != null)
+        {
+            slowEffect.transform.SetParent(GameManager.instance.GetEffectHolder());
+            slowEffect.Release();
+        }
         slowEffect = null;
     }
 
-    public void BuffSpeed()
+    public void BuffSpeed(BuffingEnemy buffingEnemy)
     {
+        nearbyBuffers.Add(buffingEnemy);
         buffed = true;
         SetBuffedSpeed(true);
         if(buffEffect == null)
@@ -178,6 +189,7 @@ public class Enemy : PooledObject
         hitbox.enabled = false;
         alive = false;
         speed = baseSpeed;
+        walking = true;
     }
 
     public void BeginWalk()
@@ -197,7 +209,7 @@ public class Enemy : PooledObject
     {
         if(alive && GameManager.instance.gameState == GameManager.GameState.Playing && walking)
         {
-            transform.position += direction * speed * Time.deltaTime;
+            transform.position += (goalTilePos - transform.position).normalized * speed * Time.deltaTime;
             if(Vector3.Distance(transform.position, goalTilePos) < 0.05f)
             {
                 targetTile = targetTile.parentTile;
@@ -256,6 +268,13 @@ public class Enemy : PooledObject
         alive = false;
         hitbox.enabled = false;
         animator.Play("Death");
+        if (slowCo != null) { StopCoroutine(slowCo); }
+        if (slowEffect != null)
+        {
+            slowEffect.transform.SetParent(GameManager.instance.GetEffectHolder());
+            slowEffect.Release();
+        }
+        slowEffect = null;
 
         AudioManager.instance.PlaySFX(deathSFX);
         //Release();
@@ -266,12 +285,6 @@ public class Enemy : PooledObject
         GameObject effect = GameManager.instance.GetEffect(3);
         effect.transform.position = transform.position + Vector3.up * 0.25f - transform.forward * 0.25f;
         effect.SetActive(true);
-        if(slowCo != null) { StopCoroutine(slowCo); }
-        if(slowEffect != null)
-        {
-            slowEffect.Release();
-        }
-        slowEffect = null;
         AudioManager.instance.PlaySFX(deathPoofSFX);
         base.Release();
     }

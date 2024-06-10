@@ -59,7 +59,7 @@ MonoBehaviour:
   rotateWhileFlying: 1
   rotateVector: {x: 0, y: 540, z: 0}
   rotateObject: {fileID: 127933347316056199}
-  hitSFX: {fileID: 8300000, guid: c769f6b0f944943489e78e5d8b6eb82c, type: 3}
+  trail: {fileID: 421080718549192905}
 --- !u!135 &5194871187906138253
 SphereCollider:
   m_ObjectHideFlags: 0

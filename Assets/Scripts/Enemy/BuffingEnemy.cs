@@ -6,16 +6,21 @@ public class BuffingEnemy : Enemy
 {
     [SerializeField] private GameObject buffingTrigger;
     private float copiedSpeed;
+    private List<Enemy> nearbyEnemies = new List<Enemy>();
+    private Enemy copiedEnemy = null;
+
     public override void Init(Tile spawnTile)
     {
         base.Init(spawnTile);
-        BuffSpeed();
+        BuffSpeed(this);
     }
 
     public override void ResetObject()
     {
         base.ResetObject();
         copiedSpeed = baseSpeed;
+        copiedEnemy = null;
+        nearbyEnemies.Clear();
     }
 
     public override void SetBuffedSpeed(bool buffing)
@@ -23,10 +28,6 @@ public class BuffingEnemy : Enemy
         if (buffing)
         {
             speed = copiedSpeed * (slowed ? 0.75f : 1.25f);
-        }
-        else
-        {
-            speed = copiedSpeed * (slowed ? 0.6f : 1);
         }
     }
 
@@ -47,60 +48,66 @@ public class BuffingEnemy : Enemy
         Enemy enemy = other.GetComponent<Enemy>();
         if (other.gameObject == gameObject ||
             enemy == null) { return; }
-        
-        enemy.BuffSpeed();
-        if(enemy.baseSpeed < copiedSpeed)
-        {
-            copiedSpeed = enemy.baseSpeed;
-        }
-        else if(copiedSpeed >= baseSpeed && enemy.baseSpeed > copiedSpeed)
+        if (!nearbyEnemies.Contains(enemy)) { nearbyEnemies.Add(enemy); }
+        enemy.BuffSpeed(this);
+
+        //copy this enemy's speed if there is NO copied enemy OR if it is slower than the copied enemy
+        if(copiedEnemy == null)
         { 
-            copiedSpeed = enemy.baseSpeed;
+            copiedEnemy = enemy;
+            copiedSpeed = copiedEnemy.baseSpeed;
         }
+        else if (enemy.baseSpeed < copiedEnemy.baseSpeed)
+        {
+            copiedEnemy = enemy;
+            copiedSpeed = copiedEnemy.baseSpeed;
+        }
+
         speed = copiedSpeed * (slowed ? (buffed ? 0.75f : 0.6f) : (buffed ? 1.25f : 1f));
     }
 
     private void OnTriggerExit(Collider other)
     {
+        Enemy enemy = other.GetComponent<Enemy>();
         if (other.gameObject == gameObject ||
-            other.GetComponent<Enemy>() == null) { return; }
+            enemy == null) { return; }
+        if (nearbyEnemies.Contains(enemy)) { nearbyEnemies.Remove(enemy); }
+        enemy.CheckForBuffingAoEs(this);
 
-        other.GetComponent<Enemy>().CheckForBuffingAoEs(buffingTrigger);
-
-        Collider[] cols = Physics.OverlapSphere(transform.position, 0.5f, 1 << 7);
-        float lowestSpeed = baseSpeed;
-        float highestSpeed = baseSpeed;
-        foreach (Collider col in cols)
+        if(enemy == copiedEnemy)
         {
-            if(col == other) { continue; }
-
-            Enemy enemy = col.GetComponent<Enemy>();
-            if (enemy.baseSpeed < lowestSpeed) { lowestSpeed = enemy.baseSpeed; }
-            if (enemy.baseSpeed >= highestSpeed) { highestSpeed = enemy.baseSpeed; }
+            copiedEnemy = null;
+            copiedSpeed = baseSpeed;
+            foreach (Enemy nearbyEnemy in nearbyEnemies)
+            {
+                //copy this enemy's speed if there is NO copied enemy OR if it is slower than the copied enemy
+                if (copiedEnemy == null)
+                {
+                    copiedEnemy = nearbyEnemy;
+                    copiedSpeed = copiedEnemy.baseSpeed;
+                }
+                else if (nearbyEnemy.baseSpeed < copiedEnemy.baseSpeed)
+                {
+                    copiedEnemy = nearbyEnemy;
+                    copiedSpeed = copiedEnemy.baseSpeed;
+                }
+            }
+            speed = copiedSpeed * (slowed ? (buffed ? 0.75f : 0.6f) : (buffed ? 1.25f : 1f));
         }
-        if(lowestSpeed == baseSpeed)
+        else if(nearbyEnemies.Count == 0)
         {
-            copiedSpeed = highestSpeed;
+            copiedEnemy = null;
+            copiedSpeed = baseSpeed;
+            speed = copiedSpeed * (slowed ? (buffed ? 0.75f : 0.6f) : (buffed ? 1.25f : 1f));
         }
-        else
-        {
-            copiedSpeed = lowestSpeed;
-        }
-        speed = copiedSpeed * (slowed ? (buffed ? 0.75f : 0.6f) : (buffed ? 1.25f : 1f));
     }
 
-    private void OnDisable()
+    public override void Kill()
     {
-        if (GameManager.instance.gameState != GameManager.GameState.Planning)
+        foreach (Enemy nearbyEnemy in nearbyEnemies)
         {
-            Collider[] cols = Physics.OverlapSphere(transform.position, 0.5f, 1 << 7);
-
-            foreach (Collider col in cols)
-            {
-                if (col.gameObject == gameObject) { continue; }
-
-                col.GetComponent<Enemy>().CheckForBuffingAoEs(buffingTrigger);
-            }
+            nearbyEnemy.CheckForBuffingAoEs(this);
         }
+        base.Kill();
     }
 }

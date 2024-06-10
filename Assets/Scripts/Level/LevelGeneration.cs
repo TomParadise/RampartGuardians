@@ -47,18 +47,18 @@ public class LevelGeneration : MonoSingleton<LevelGeneration>
 
     [SerializeField] private CameraMovement cameraMovement;
 
-    private ObjectPool<PooledObject> spawnTilePool;
-    private ObjectPool<PooledObject> finalSpawnTilePool;
+    private GenericPool spawnTilePool;
+    private GenericPool finalSpawnTilePool;
 
 
     private void Start()
     {
         GameObject spawnPoolObject = new GameObject(tilePrefabs[5].name + " pool gameobject");
         spawnPoolObject.transform.parent = transform;
-        spawnTilePool = spawnPoolObject.AddComponent<GenericPool>().Init(tilePrefabs[5], 4).GetPool();
+        spawnTilePool = spawnPoolObject.AddComponent<GenericPool>().Init(tilePrefabs[5], 4);
         GameObject finalSpawnPoolObject = new GameObject(tilePrefabs[6].name + " pool gameobject");
         finalSpawnPoolObject.transform.parent = transform;
-        finalSpawnTilePool = finalSpawnPoolObject.AddComponent<GenericPool>().Init(tilePrefabs[6], 4).GetPool();
+        finalSpawnTilePool = finalSpawnPoolObject.AddComponent<GenericPool>().Init(tilePrefabs[6], 4);
     }
 
     public void AddTowerPositioner(TowerPositioner towerPositioner, bool utility) 
@@ -190,7 +190,7 @@ public class LevelGeneration : MonoSingleton<LevelGeneration>
         {
             Tile parent = endTiles[i].parentTile;
             int dist = 0;
-            while (parent != gridTiles[i])
+            while (parent != gridTiles[0])
             {
                 dist++;
                 parent = parent.parentTile;
@@ -936,7 +936,6 @@ public class LevelGeneration : MonoSingleton<LevelGeneration>
             if (adjacentCoords.x + x >= 0 &&
                 adjacentCoords.x + x < gridWidth &&
                 tempTiles[(int)adjacentCoords.y][(int)adjacentCoords.x + x] != origin &&
-                (adjacentCoords.x + x < ignoreMins.x || adjacentCoords.x + x >= ignoreMaxs.x || adjacentCoords.y < ignoreMins.y || adjacentCoords.y >= ignoreMaxs.y) &&
                 !tempTiles[(int)adjacentCoords.y][(int)adjacentCoords.x + x].isOccupied)
             {
                 tiles.Add(tempTiles[(int)adjacentCoords.y][(int)adjacentCoords.x + x]);
@@ -948,7 +947,6 @@ public class LevelGeneration : MonoSingleton<LevelGeneration>
             if (adjacentCoords.y + y >= 0 &&
                 adjacentCoords.y + y < gridHeight &&
                 tempTiles[(int)adjacentCoords.y + y][(int)adjacentCoords.x] != origin &&
-                (adjacentCoords.y + y < ignoreMins.y || adjacentCoords.y + y >= ignoreMaxs.y || adjacentCoords.x < ignoreMins.x || adjacentCoords.x >= ignoreMaxs.x) &&
                 !tempTiles[(int)adjacentCoords.y + y][(int)adjacentCoords.x].isOccupied)
             {
                 tiles.Add(tempTiles[(int)adjacentCoords.y + y][(int)adjacentCoords.x]);
@@ -1022,7 +1020,7 @@ public class LevelGeneration : MonoSingleton<LevelGeneration>
             timer += Time.deltaTime;
             if(timer > 0.1f)
             {
-                //timer = 0;
+                timer = 0;
                 CreateMap(5);
                 //DestroyAllTiles();
                 //InitFirstPath();
@@ -1087,13 +1085,13 @@ public class LevelGeneration : MonoSingleton<LevelGeneration>
 
     private void AddBufferAroundMap()
     {
-        prepends.x--;
-        prepends.y--;
-        appends.x++;
-        appends.y++;
+        prepends.x -= 2;
+        prepends.y -= 2;
+        appends.x += 2;
+        appends.y += 2;
 
-        gridWidth += 2;
-        gridHeight += 2;
+        gridWidth += 4;
+        gridHeight += 4;
 
         //EXPAND THE GRID
         TempTile[][] newTiles = new TempTile[gridHeight][];
@@ -1102,8 +1100,8 @@ public class LevelGeneration : MonoSingleton<LevelGeneration>
             newTiles[y] = new TempTile[gridWidth];
             for (int x = 0; x < newTiles[y].Length; x++)
             {
-                if ((y < 1) || (y >= gridHeight - 1) ||
-                    (x < 1) || (x >= gridHeight - 1))
+                if ((y < 2) || (y >= gridHeight - 2) ||
+                    (x < 2) || (x >= gridWidth - 2))
                 {
                     //new  tiles that need to be added
                     TempTile tile = new TempTile();
@@ -1112,8 +1110,8 @@ public class LevelGeneration : MonoSingleton<LevelGeneration>
                 }
                 else // existing tiles in the old array
                 {
-                    TempTile tempTile = tempTiles[y - 1][x - 1];
-                    tempTile.coordinates += new Vector2(1, 1);
+                    TempTile tempTile = tempTiles[y - 2][x - 2];
+                    tempTile.coordinates += new Vector2(2, 2);
                     newTiles[y][x] = tempTile;
                 }
             }
@@ -1185,7 +1183,7 @@ public class LevelGeneration : MonoSingleton<LevelGeneration>
             if(i < startIndex) { gridTiles[i].BounceTile(); }            
         }
 
-        gridTiles[startIndex].spawnTile = spawnTilePool.Get().GetComponent<BlankTile>();
+        gridTiles[startIndex].spawnTile = spawnTilePool.GetPool().Get().GetComponent<BlankTile>();
         gridTiles[startIndex].spawnTile.InitSpawnTile(gridTiles[startIndex].transform.position, gridTiles[startIndex].parentTile.transform.position);
 
         for (int i = startIndex; i < gridTiles.Count; i++)
@@ -1200,6 +1198,8 @@ public class LevelGeneration : MonoSingleton<LevelGeneration>
         {
             Destroy(tileHolder.GetChild(i).gameObject);
         }
+        spawnTilePool.ReleaseChildren();
+        finalSpawnTilePool.ReleaseChildren();
     }
 
     //check for any end tiles that are ON the newly appended/prepended tiles,
@@ -1319,32 +1319,66 @@ public class LevelGeneration : MonoSingleton<LevelGeneration>
         {
             for(int x = 0; x < gridWidth; x++)
             {
-                bool xMin = x > 0;
-                bool xMax = x < gridWidth - 1;
-                bool yMin = y > 0;
-                bool yMax = y < gridHeight - 1;
-                if(!tempTiles[y][x].isOccupied &&
-                    ((xMax && (tempTiles[y][x + 1].isOccupied || (yMin && tempTiles[y - 1][x + 1].isOccupied) || (yMax && tempTiles[y + 1][x + 1].isOccupied)))
-                     || (yMax && (tempTiles[y + 1][x].isOccupied || (xMin && tempTiles[y + 1][x - 1].isOccupied) || (xMax && tempTiles[y + 1][x + 1].isOccupied)))
-                     || (xMin && (tempTiles[y][x - 1].isOccupied || (yMin && tempTiles[y - 1][x - 1].isOccupied) || (yMax && tempTiles[y + 1][x - 1].isOccupied)))
-                     || (yMin && (tempTiles[y - 1][x].isOccupied || (xMin && tempTiles[y - 1][x - 1].isOccupied) || (xMax && tempTiles[y - 1][x + 1].isOccupied)))))
+                //bool xMin = x > 0;
+                //bool xMax = x < gridWidth - 1;
+                //bool yMin = y > 0;
+                //bool yMax = y < gridHeight - 1;
+                //if(!tempTiles[y][x].isOccupied &&
+                //    ((xMax && (tempTiles[y][x + 1].isOccupied || (yMin && tempTiles[y - 1][x + 1].isOccupied) || (yMax && tempTiles[y + 1][x + 1].isOccupied)))
+                //     || (yMax && (tempTiles[y + 1][x].isOccupied || (xMin && tempTiles[y + 1][x - 1].isOccupied) || (xMax && tempTiles[y + 1][x + 1].isOccupied)))
+                //     || (xMin && (tempTiles[y][x - 1].isOccupied || (yMin && tempTiles[y - 1][x - 1].isOccupied) || (yMax && tempTiles[y + 1][x - 1].isOccupied)))
+                //     || (yMin && (tempTiles[y - 1][x].isOccupied || (xMin && tempTiles[y - 1][x - 1].isOccupied) || (xMax && tempTiles[y - 1][x + 1].isOccupied)))))
+                //{
+                //    BlankTile blankTile = Instantiate(
+                //        tilePrefabs[(int)TileTypes.Blank],
+                //        new Vector3(x + prepends.x, 0, y + prepends.y),
+                //        Quaternion.identity, tileHolder)
+                //        .GetComponent<BlankTile>();
+                //    blankTile.Init(new Vector2(x, y));
+                //    if (detailsIndices.Contains(y * gridWidth + x))
+                //    {
+                //        blankTile.CreateDetails();
+                //    }
+                //    else
+                //    {
+                //        utilityPositioners.Add(blankTile.EnableUtilityPositioner());
+                //    }
+                //    blankTile.transform.localScale = Vector3.zero;
+                //    blankTiles[y][x] = blankTile;
+                //}
+                if (tempTiles[y][x].isOccupied)
                 {
-                    BlankTile blankTile = Instantiate(
-                        tilePrefabs[(int)TileTypes.Blank],
-                        new Vector3(x + prepends.x, 0, y + prepends.y),
-                        Quaternion.identity, tileHolder)
-                        .GetComponent<BlankTile>();
-                    blankTile.Init(new Vector2(x, y));
-                    if (detailsIndices.Contains(y * gridWidth + x))
+                    for(int y2 = -1; y2 <= 1; y2++)
                     {
-                        blankTile.CreateDetails();
+                        for (int x2 = -1; x2 <= 1; x2++)
+                        {
+                            if(y + y2 >= 0 && y + y2 <= gridHeight - 1 &&
+                                x + x2 >= 0 && x + x2 <= gridHeight - 1)
+                            {
+                                if (!tempTiles[y + y2][x + x2].isOccupied &&
+                                    blankTiles[y + y2][x + x2] == null)
+                                {
+                                    BlankTile blankTile = Instantiate(
+                                        tilePrefabs[(int)TileTypes.Blank],
+                                        new Vector3(x + x2 + prepends.x, 0, y + y2 + prepends.y),
+                                        Quaternion.identity, tileHolder)
+                                        .GetComponent<BlankTile>();
+                                    blankTile.Init(new Vector2(x + x2, y + y2));
+                                    if (detailsIndices.Contains((y + y2) * gridWidth + (x + x2)))
+                                    {
+                                        blankTile.CreateDetails();
+                                    }
+                                    else
+                                    {
+                                        utilityPositioners.Add(blankTile.EnableUtilityPositioner());
+                                    }
+                                    blankTile.transform.localScale = Vector3.zero;
+                                    //blankTile.BounceTile();
+                                    blankTiles[y + y2][x + x2] = blankTile;
+                                }
+                            }
+                        }
                     }
-                    else
-                    {
-                        utilityPositioners.Add(blankTile.EnableUtilityPositioner());
-                    }
-                    blankTile.transform.localScale = Vector3.zero;
-                    blankTiles[y][x] = blankTile;
                 }
             }
         }
@@ -1504,11 +1538,11 @@ public class LevelGeneration : MonoSingleton<LevelGeneration>
                 //bounce.BounceTile(); 
                 if(bounce.childTiles.Count > 0)
                 {
-                    bounce.spawnTile = spawnTilePool.Get().GetComponent<BlankTile>();
+                    bounce.spawnTile = spawnTilePool.GetPool().Get().GetComponent<BlankTile>();
                 }
                 else
                 {
-                    bounce.spawnTile = finalSpawnTilePool.Get().GetComponent<BlankTile>();
+                    bounce.spawnTile = finalSpawnTilePool.GetPool().Get().GetComponent<BlankTile>();
                 }
                 bounce.spawnTile.InitSpawnTile(bounce.transform.position, bounce.parentTile.transform.position);
                 int yPos = (int)(bounce.transform.position.z - prepends.y);

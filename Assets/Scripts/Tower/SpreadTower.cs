@@ -18,7 +18,7 @@ public class SpreadTower : AttackingTower
             projectile.transform.position = projectileSpawnPoint.position;
             projectile.gameObject.SetActive(true);
             projectile.transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y + angle * i, 0);
-            projectile.Init(damage, range, shotSpeed, piercingProjectiles, null, effectRange, this);
+            projectile.Init(damage, range, shotSpeed, piercingProjectiles, i == 0 ? targetEnemy.transform : null, effectRange, this);
         }
         animator.Play("Shoot");
 

@@ -49,6 +49,8 @@ public class GameManager : MonoSingleton<GameManager>
 
     [SerializeField] private AudioClip startWaveSFX;
 
+    private Coroutine victoryFireworksCo = null;
+
     [System.Serializable]
     public struct EnemySpawnGroups
     {
@@ -92,7 +94,8 @@ public class GameManager : MonoSingleton<GameManager>
     {
         Playing,
         Planning,
-        Paused
+        Paused,
+        GameOver
     }
 
     // Start is called before the first frame update
@@ -108,7 +111,7 @@ public class GameManager : MonoSingleton<GameManager>
     {
         int length = effectPrefabs.Length;
         effectPools = new ObjectPool<PooledObject>[length];
-        int[] capacities = new int[8] { 5, 5, 10, 10, 5, 15, 10, 15 };
+        int[] capacities = new int[10] { 5, 5, 10, 10, 5, 15, 10, 15, 1, 10 };
         for (int i = 0; i < length; i++)
         {
             GameObject poolObject = new GameObject(effectPrefabs[i].name + " pool gameobject");
@@ -161,8 +164,10 @@ public class GameManager : MonoSingleton<GameManager>
     {
         if (Input.GetKeyDown(KeyCode.Escape)) 
         {
-            LevelGeneration.instance.ExpandMap(100);
+            //LevelGeneration.instance.ExpandMap(100);
+            //OnVictory();
             //StopStage(); 
+            TogglePause();
         }
         if (gameState != GameState.Playing) { return; }
         EnemySpawnTimer();
@@ -170,15 +175,23 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void TogglePause()
     {
+        if(UIManager.GetPauseMenu().GetIsConfirmMenuOpen())
+        {
+            UIManager.GetPauseMenu().CancelRestartGame();
+            return;
+        }
+        if(gameState == GameState.GameOver) { return; }
         if(gameState == GameState.Paused) 
         { 
             gameState = prevGameState;
             AudioManager.instance.UnPauseAudio();
+            UIManager.ClosePauseUI();
         }
         else 
         { 
             gameState = GameState.Paused;
             AudioManager.instance.PauseAudio();
+            UIManager.OpenPauseUI();
         }
         foreach(Tower tower in towers)
         {
@@ -198,7 +211,7 @@ public class GameManager : MonoSingleton<GameManager>
             if (enemySpawnTimer <= 0)
             {
                 SpawnEnemy();
-                enemySpawnTimer = maxSpawnTimer;
+                enemySpawnTimer = maxSpawnTimer + RandomHelpers.GenerateRandomSign() * Random.Range(0f, 0.05f);
             }
         }
     }
@@ -301,6 +314,10 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void InitGame()
     {
+        if(victoryFireworksCo != null) { StopCoroutine(victoryFireworksCo); }
+        victoryFireworksCo = null;
+        camMovement.canMove = true;
+
         playerHP = maxHP;
         enemySpawnTimer = 0;
         stageCount = -1;
@@ -316,6 +333,8 @@ public class GameManager : MonoSingleton<GameManager>
         UIManager.EnableStartWaveButton();
         gameState = GameState.Planning;
         prevGameState = GameState.Planning;
+
+        AudioManager.instance.TransitionMusic(AudioManager.MusicState.Planning, 1, false);
     }
 
     public void StartStage()
@@ -397,6 +416,7 @@ public class GameManager : MonoSingleton<GameManager>
         {
             //game over lose
             AudioManager.instance.TransitionMusic(AudioManager.MusicState.Defeat, waveCounter);
+            OnDefeat();
         }
         else if(enemyCount <= 0 && !spawningEnemies)
         {
@@ -429,7 +449,9 @@ public class GameManager : MonoSingleton<GameManager>
         UIManager.DisplayWaveCompleteInfo(waveCounter, reward);
         GivePlayerGold(reward);
         waveCounter++;
-        UIManager.UpdateWaveText("Wave: " + waveCounter.ToString());
+        string waveText = "Wave: " + waveCounter.ToString();
+        if(waveCounter == 50) { waveText = "Final wave"; }
+        UIManager.UpdateWaveText(waveText);
         UIManager.RoundEnd();
         ReleaseAllProjectiles();
         gameState = GameState.Planning;
@@ -453,5 +475,139 @@ public class GameManager : MonoSingleton<GameManager>
         {
             projectileHolder.GetChild(i).GetComponent<Projectile>().KillProjectile();
         }
+    }
+
+    public void OnVictory()
+    {
+        gameState = GameState.GameOver;
+        camMovement.canMove = false;
+
+        foreach (Tower tower in towers)
+        {
+            tower.TogglePause(true);
+        }
+        foreach (Enemy enemy in enemies)
+        {
+            enemy.TogglePause(true);
+        }
+
+        victoryFireworksCo = StartCoroutine(VictoryCo());
+    }
+
+    private IEnumerator VictoryCo()
+    {
+        float timer = 3f;
+
+        GameObject castleTile = LevelGeneration.instance.GetCastleTile().transform.GetChild(0).gameObject;
+        float rot = castleTile.transform.eulerAngles.y;
+        if (rot < 0) { rot += 360; }
+        Vector3 goalPos = new Vector3(1, 4, 4);
+        Quaternion goalRot = Quaternion.Euler(new Vector3(45, 180, 0));
+        if (rot == 90)
+        {
+            goalPos = new Vector3(4, 4, 1);
+            goalRot = Quaternion.Euler(new Vector3(45, -90, 0));
+        }
+        else if (rot == 180)
+        {
+            goalPos = new Vector3(1, 4, -2);
+            goalRot = Quaternion.Euler(new Vector3(45, 0, 0));
+        }
+        else if (rot == 270)
+        {
+            goalPos = new Vector3(-2, 4, 1);
+            goalRot = Quaternion.Euler(new Vector3(45, 90, 0));
+        }
+        Camera cam = Camera.main;
+        Vector3 startPos = cam.transform.position;
+        Quaternion startRot = cam.transform.rotation;
+
+        while (timer > 0)
+        {
+            while (gameState == GameState.Paused) { yield return null; }
+            cam.transform.position = Vector3.Lerp(goalPos, startPos, timer / 3);
+            cam.transform.rotation = Quaternion.Lerp(goalRot, startRot, timer / 3);
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+
+        cam.transform.position = goalPos;
+        cam.transform.rotation = goalRot;
+        while(true)
+        {
+            timer = Random.Range(0.2f, 0.55f);
+            while (timer > 0)
+            {
+                while (gameState == GameState.Paused) { yield return null; }
+                timer -= Time.deltaTime;
+                yield return null;
+            }
+            GameObject firework = GetEffect(9);
+            firework.transform.position = castleTile.transform.position + Vector3.up * 0.5f;
+            firework.gameObject.SetActive(true);
+        }
+    }
+
+    public void OnDefeat()
+    {
+        gameState = GameState.GameOver;
+        camMovement.canMove = false;
+
+        foreach (Tower tower in towers)
+        {
+            tower.TogglePause(true);
+        }
+        foreach (Enemy enemy in enemies)
+        {
+            enemy.TogglePause(true);
+        }
+
+        StartCoroutine(DefeatCo());
+    }
+
+    private IEnumerator DefeatCo()
+    {
+        float timer = 3f;
+
+        GameObject castleTile = LevelGeneration.instance.GetCastleTile().transform.GetChild(0).gameObject;
+        float rot = castleTile.transform.eulerAngles.y;
+        if(rot < 0) { rot += 360; }
+        Vector3 goalPos = new Vector3(2, 2, 0);
+        Quaternion goalRot = Quaternion.Euler(new Vector3(35, -45, 0));
+        if(rot == 0 || rot == 270)
+        {
+            goalPos = new Vector3(0, 2, 2);
+            goalRot = Quaternion.Euler(new Vector3(35, 135, 0));
+        }
+        Camera cam = Camera.main;
+        Vector3 startPos = cam.transform.position;
+        Quaternion startRot = cam.transform.rotation;
+
+        while(timer > 0)
+        {
+            while(gameState == GameState.Paused) { yield return null; }
+            cam.transform.position = Vector3.Lerp(goalPos, startPos, timer / 3);
+            cam.transform.rotation = Quaternion.Lerp(goalRot, startRot, timer / 3);
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+
+        cam.transform.position = goalPos;
+        cam.transform.rotation = goalRot;
+        timer = 1f;
+        while (timer > 0)
+        {
+            while (gameState == GameState.Paused) { yield return null; }
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+
+        GameObject castleExplosion = GetEffect(8);
+        castleExplosion.transform.position = castleTile.transform.position + Vector3.up * 0.75f;
+        castleExplosion.gameObject.SetActive(true);
+        castleExplosion = GetEffect(1);
+        castleExplosion.gameObject.SetActive(true);
+        castleTile.transform.GetChild(1).gameObject.SetActive(false);
+        castleTile.transform.GetChild(2).gameObject.SetActive(true);
     }
 }
