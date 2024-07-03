@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BlankTile : PooledObject
 {
-    [SerializeField] private GameObject[] detailPrefabs;
     [SerializeField] private Transform detailHolder;
     [SerializeField] private TowerPositioner utilityPositioner;
     public Vector2 coordinates;
@@ -36,13 +35,12 @@ public class BlankTile : PooledObject
         BounceTile();
     }
 
-    public void CreateDetails()
+    public void CreateDetails(GameObject detail)
     {
-        Instantiate
-            (detailPrefabs[Random.Range(0, detailPrefabs.Length)],
-            detailHolder.position + new Vector3(Random.Range(-0.15f, 0.15f), 0, Random.Range(-0.15f, 0.15f)),
-            Quaternion.Euler(0, Random.Range(0f, 360f), 0),
-            detailHolder);
+        detail.transform.SetParent(detailHolder);
+        detail.transform.position = detailHolder.position + new Vector3(Random.Range(-0.15f, 0.15f), 0, Random.Range(-0.15f, 0.15f));
+        detail.transform.rotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0);
+        detail.transform.localScale = Vector3.one;
     }
 
     public TowerPositioner EnableUtilityPositioner()

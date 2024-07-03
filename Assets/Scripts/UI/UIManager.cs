@@ -21,8 +21,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private EnemyHPDisplay enemyHPDisplay;
     [SerializeField] private TowerPurchasePanel towerPurchasePanel;
     [SerializeField] private PauseUI pauseUI;
+    [SerializeField] private GameOverUI gameOverUI;
     private TowerLevelUpPanel activeUpgradePanel = null;
     private Coroutine skyColourCo = null;
+
+    public GameOverUI GetGameOverUI() { return gameOverUI; }
 
     public PauseUI GetPauseMenu() { return pauseUI; }
 
@@ -63,6 +66,8 @@ public class UIManager : MonoBehaviour
     {
         waveCompletedPanel.Init(wave, reward);
     }
+
+    public void ForceStopWavePopup() { waveCompletedPanel.ForceStopCo(); }
 
     public void StartWaveButton()
     {
@@ -176,4 +181,19 @@ public class UIManager : MonoBehaviour
         activeUpgradePanel = panelInfo;
         return panelInfo;
     }
+
+    //private void Update()
+    //{
+    //    if (Application.isEditor)
+    //    {
+    //        if (Input.GetKeyDown(KeyCode.Backspace))
+    //        {
+    //            bool active = transform.GetChild(0).gameObject.activeInHierarchy;
+    //            for (int i = 0; i < 6; i++)
+    //            {
+    //                transform.GetChild(i).gameObject.SetActive(!active);
+    //            }
+    //        }
+    //    }
+    //}
 }

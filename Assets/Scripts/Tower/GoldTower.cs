@@ -34,13 +34,14 @@ public class GoldTower : Tower
             if(++pierceCount == 3) 
             { 
                 GameManager.instance.GivePlayerGold((int)(2 * damage));
-                GameManager.instance.EarnGoldPopUp((int)(2 * damage), transform.position);
+                GameManager.instance.EarnGoldPopUp((int)(2 * damage), transform.position, 2.5f);
+                pierceCount = 0;
                 return;
             }
         }
         GameManager.instance.GivePlayerGold((int)damage);
 
-        GameManager.instance.EarnGoldPopUp((int)damage, transform.position);
+        GameManager.instance.EarnGoldPopUp((int)damage, transform.position, 2.5f);
     }
 
     public override void ResetObject()
@@ -66,8 +67,14 @@ public class GoldTower : Tower
             upgradeInfo = upgrades[level - 1].upgradeText;
             upgradeCost = upgrades[level - 1].UpgradeCost;
         }
+        string desc = "Earn +<color=#C58500>" + damage.ToString() + "</color> gold\nevery wave";
+        if (piercingProjectiles)
+        {
+            int wavesUntilDouble = 3 - pierceCount;
+            desc += "\n(Double in " + (wavesUntilDouble == 1 ? "1 wave" : wavesUntilDouble.ToString() + " waves") + ")";
+        }
         levelUpPanel = GameManager.instance.GetUIManager().InitTowerUpgradeInfo(
-            this, towerName, level, "Earn +" + damage.ToString() + " gold after every wave", upgradeInfo, upgradeCost, goldValue);
+            this, towerName, level, desc, upgradeInfo, upgradeCost, goldValue);
         if (levelUpPanel == null)
         {
             showingUpgradeInfo = false;
@@ -87,8 +94,14 @@ public class GoldTower : Tower
                 upgradeInfo = upgrades[level - 1].upgradeText;
                 upgradeCost = upgrades[level - 1].UpgradeCost;
             }
+            string desc = "Earn +<color=#C58500>" + damage.ToString() + "</color> gold\nevery wave";
+            if (piercingProjectiles) 
+            {
+                int wavesUntilDouble = 3 - pierceCount;
+                desc += "\n(Double in " + (wavesUntilDouble == 1 ? "1 wave" : wavesUntilDouble.ToString() + " waves") + ")";
+            }
             levelUpPanel.Init(
-            this, towerName, level, "Earn +" + damage.ToString() + " gold after every wave", upgradeInfo, upgradeCost, goldValue);
+            this, towerName, level, desc, upgradeInfo, upgradeCost, goldValue);
         }
     }
 

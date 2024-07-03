@@ -31,13 +31,16 @@ public class TowerButton : MonoBehaviour
             AudioManager.instance.PlayButtonConfirmSFX();
             positioner = null;
             towerInstance = GameManager.instance.GetTower(towerIndex).GetComponent<Tower>();
-            towerInstance.transform.SetParent(transform);
+            towerInstance.transform.SetParent(GameManager.instance.GetTowerHolder());
+            towerInstance.towerButton = this;
             LevelGeneration.instance.TogglePositioners(true, towerInstance.utilityTile);
 
             GameManager.instance.GetUIManager().GetTowerPanel().holdingTower = true;
             GameManager.instance.camMovement.holdingTower = true;
 
             StartCoroutine(TowerPositionCo());
+
+            GameManager.instance.ToggleAllBuffingTowerAreas(true);
         }
         else { AudioManager.instance.PlayNotEnoughGoldSFX(); }
     }
@@ -72,11 +75,12 @@ public class TowerButton : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0) || (timeHeld > 0.5f && Input.GetMouseButtonUp(0)) || Input.GetMouseButtonDown(1))
             {
-                //place turret
+                //place tower
                 LevelGeneration.instance.TogglePositioners(false, towerInstance.utilityTile);
                 if (positioner != null && !Input.GetMouseButtonDown(1))
                 {
                     GameManager.instance.PlaceTower(towerInstance, positioner, purchasePanel.towerObjects[towerIndex].towerCost);
+                    towerInstance.towerButton = null;
                 }
                 else//stop trying to place turret
                 {
@@ -85,6 +89,8 @@ public class TowerButton : MonoBehaviour
                 towerInstance = null;
                 GameManager.instance.GetUIManager().GetTowerPanel().holdingTower = false;
                 GameManager.instance.camMovement.holdingTower = false;
+
+                GameManager.instance.ToggleAllBuffingTowerAreas(false);
             }
 
             if (Input.GetMouseButtonUp(0))

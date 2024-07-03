@@ -11,6 +11,8 @@ public class GoldEarnedPopUp : PooledObject
 
     [SerializeField] private Sprite[] textSprites;
     float timer = 0;
+    float maxTimer = 1f;
+    float minTimer = 0.2f;
 
     private void Awake()
     {
@@ -22,7 +24,7 @@ public class GoldEarnedPopUp : PooledObject
         transform.position += Vector3.up * 0.55f;
     }
 
-    public void Init(int goldAmount)
+    public void Init(int goldAmount, float timer)
     {
         transform.rotation = Quaternion.LookRotation(transform.position - mainCam.transform.position);
         int[] digits = GetIntArray(goldAmount);
@@ -38,6 +40,8 @@ public class GoldEarnedPopUp : PooledObject
         Vector3 pos = transform.position;
         pos += transform.right * ((digits.Length + 1) * 0.3f - 0.1f) / 3;
         transform.position = pos;
+        maxTimer = timer;
+        minTimer = maxTimer / 5f;
     }
     public void InitAsDamage(int damageAmount)
     {
@@ -76,11 +80,11 @@ public class GoldEarnedPopUp : PooledObject
         transform.position += Vector3.up * Time.deltaTime * 0.2f;
         timer += Time.deltaTime;
 
-        if(timer < 0.2f)
+        if (timer < minTimer)
         {
             return;
         }
-        float alpha = Mathf.Lerp(1, 0, (timer - 0.2f) / 0.8f);
+        float alpha = Mathf.Lerp(1, 0, (timer - minTimer) / (maxTimer - minTimer));
         for (int i = 0; i < 5; i++)
         {
             SpriteRenderer rend = transform.GetChild(i).GetComponent<SpriteRenderer>();
@@ -88,14 +92,16 @@ public class GoldEarnedPopUp : PooledObject
             col.a = alpha;
             rend.color = col;
         }
-        if (timer >= 1f) { Release(); }
+        if (timer >= maxTimer) { Release(); }
     }
 
     public override void ResetObject()
     {
         base.ResetObject();
         timer = 0;
-        for(int i = 0; i < 5; i++)
+        maxTimer = 1f;
+        minTimer = 0.2f;
+        for (int i = 0; i < 5; i++)
         {
             if(i > 0 && i < 4)
             {

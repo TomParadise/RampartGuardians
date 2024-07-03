@@ -82,7 +82,7 @@ PrefabInstance:
     - target: {fileID: -7635826562936255635, guid: 056a50a89219c624c9ad631c064e1114, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: bafd7c7035d66eb4eb3b0c26f7e11c46, type: 2}
+      objectReference: {fileID: 2100000, guid: ed4d4364d814e0b4db0801b54795ef58, type: 2}
     - target: {fileID: 919132149155446097, guid: 056a50a89219c624c9ad631c064e1114, type: 3}
       propertyPath: m_Name
       value: Skeleton_Dagger
@@ -787,6 +787,7 @@ MonoBehaviour:
   deathPoofSFX: {fileID: 8300000, guid: 6c588741791c04842bac3c96482d9082, type: 3}
   hitTowerSFX: {fileID: 8300000, guid: 80e94465d2204da4191a0e26a20d3b11, type: 3}
   takeDamageSFX: {fileID: 8300000, guid: 661cdc558ba987a4db60eb15a2c6d4b3, type: 3}
+  nearbyBuffers: []
 --- !u!54 &3039530191403497801
 Rigidbody:
   m_ObjectHideFlags: 0

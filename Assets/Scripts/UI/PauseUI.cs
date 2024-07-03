@@ -14,9 +14,9 @@ public class PauseUI : MonoBehaviour
 
     private void Awake()
     {
-        masterSlider.value = 0.5f;
-        musicSlider.value = 1f;
-        SFXSlider.value = 1f;
+        masterSlider.value = masterSlider.maxValue / 2;
+        musicSlider.value = musicSlider.maxValue;
+        SFXSlider.value = SFXSlider.maxValue;
         ClosePauseUI();
         //OnMasterVolumeChanged(0.5f);
         //OnMusicVolumeChanged(1f);

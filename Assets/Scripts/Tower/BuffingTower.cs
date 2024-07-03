@@ -7,6 +7,8 @@ public class BuffingTower : Tower
     [SerializeField] private SphereCollider sphereCol;
     [SerializeField] private BuffingAoE buffingAoE;
 
+    private bool forceRadiusOn = false;
+
     public override void Buff(float _buffAmount)
     {
         return;
@@ -23,6 +25,7 @@ public class BuffingTower : Tower
         if (radiusObject != null) { radiusObject.transform.localScale = new Vector3(radiusScale * range, 0.01f, radiusScale * range); }
         sphereCol.radius = range;
         buffingAoE.gameObject.SetActive(false);
+        forceRadiusOn = false;
     }
 
     public override void UpgradeTower()
@@ -154,5 +157,33 @@ public class BuffingTower : Tower
         {
             towerToCheck.RemoveBuff();
         }
+    }
+
+    public override void MouseOver()
+    {
+        if (forceRadiusOn) { return; }
+        if (GameManager.instance.gameState == GameManager.GameState.Paused) { return; }
+        if (showingUpgradeInfo) { return; }
+        if (placed)
+        {
+            radiusObject.gameObject.SetActive(true);
+            hoverText.SetActive(true);
+        }
+    }
+
+    public override void MouseExit()
+    {
+        if (forceRadiusOn) { return; }
+        if (showingUpgradeInfo) { return; }
+        if (placed)
+        {
+            radiusObject.gameObject.SetActive(false);
+            hoverText.SetActive(false);
+        }
+    }
+    public void ToggleRadius(bool enabled) 
+    {
+        radiusObject.gameObject.SetActive(enabled);
+        forceRadiusOn = enabled;
     }
 }

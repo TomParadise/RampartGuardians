@@ -8,7 +8,7 @@ public class MeleeTower : AttackingTower
     [SerializeField] private GameObject[] meleeHitboxes;
     [SerializeField] private TrailRenderer meleeTrail;
     private Enemy targetEnemy = null;
-    private int doubleSpin = -1;
+    public int doubleSpin = -1;
 
     public override void UpgradeTower()
     {

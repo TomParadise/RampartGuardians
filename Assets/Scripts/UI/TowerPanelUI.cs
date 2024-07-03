@@ -22,7 +22,7 @@ public class TowerPanelUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (!GameManager.instance.GetIsGamePlayingOrPlanning()) { return; }
         if(pointerInside && !holdingTower)
         {
             Vector2 pos = rect.anchoredPosition;

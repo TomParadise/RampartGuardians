@@ -67,8 +67,15 @@ public class Tower : PooledObject
     private PooledObject buffParticles = null;
 
     public int roundsActive = -1;
+    public TowerButton towerButton;
 
-    public void TogglePause(bool paused) { animator.speed = paused ? 0 : 1; }
+    public void TogglePause(bool paused) 
+    {
+        if (animator != null)
+        {
+            animator.speed = paused ? 0 : 1;
+        }
+    }
 
     public virtual void OnRoundEnd() 
     {
@@ -80,7 +87,13 @@ public class Tower : PooledObject
     }
     public virtual void OnRoundStart() 
     {
-        if(roundsActive == -1) { roundsActive = 0; }
+        if(roundsActive == -1) 
+        {
+            roundsActive = 0;
+
+            GameManager.instance.TowerUpgraded(level - 1);
+            GameManager.instance.AddTower();
+        }
     }
 
     public enum TargetType
@@ -129,6 +142,8 @@ public class Tower : PooledObject
     {
         if(level - 1 == upgrades.Length) { return; }
 
+        if(roundsActive > -1) { GameManager.instance.TowerUpgraded(1); }
+
         goldValue += upgrades[level - 1].UpgradeCost;
         damage += upgrades[level - 1].damageUpgrade;
         fireRate += upgrades[level - 1].fireRateUpgrade;
@@ -145,6 +160,8 @@ public class Tower : PooledObject
         levelIcon.SetSprite(level - 2);
         UpdateUpgradeInfo();
         AudioManager.instance.PlayButtonUpgradeSFX();
+
+        if(animator != null) { animator.Play("Upgrade"); }
     }
 
     public virtual void UpdateUpgradeInfo()
@@ -228,7 +245,11 @@ public class Tower : PooledObject
         transform.rotation = Quaternion.AngleAxis(rot, Vector3.up);
 
         AudioManager.instance.PlaySFX(placeTowerSFX);
-        if (GameManager.instance.GetIsWaveStarted()) { roundsActive = 0; }
+        if (GameManager.instance.GetIsWaveStarted()) 
+        {
+            roundsActive = 0;
+            GameManager.instance.AddTower();
+        }
     }
 
     public override void ResetObject()
@@ -257,6 +278,7 @@ public class Tower : PooledObject
         buffAmount = 0;
         piercingProjectiles = basePiercingProjectiles;
         roundsActive = -1;
+        towerButton = null;
         base.ResetObject();
     }
 
@@ -276,13 +298,13 @@ public class Tower : PooledObject
         }
         if (closestCol != null)
         {
-            if (transform.parent.GetComponent<TowerButton>().positioner == closestCol.GetComponent<TowerPositioner>())
+            if (towerButton.positioner == closestCol.GetComponent<TowerPositioner>())
             {
                 transform.position = closestCol.transform.position;
                 return;
             }
             AudioManager.instance.PlaySFX(snapTowerSFX);
-            transform.parent.GetComponent<TowerButton>().positioner = closestCol.GetComponent<TowerPositioner>();
+            towerButton.positioner = closestCol.GetComponent<TowerPositioner>();
             transform.position = closestCol.transform.position;
             if (animator != null) { animator.Play("Idle"); }
             radiusObject.material = radiusMats[0];
@@ -292,7 +314,7 @@ public class Tower : PooledObject
         {
             pos.y = 0.5f;
             transform.position = pos;
-            transform.parent.GetComponent<TowerButton>().positioner = null;
+            towerButton.positioner = null;
             if (animator != null) { animator.Play("Float"); }
             radiusObject.material = radiusMats[1];
         }
@@ -300,6 +322,12 @@ public class Tower : PooledObject
 
     private void OnMouseUp()
     {
+        MouseUp();
+    }
+
+    public virtual void MouseUp()
+    {
+        if (GameManager.instance.gameState == GameManager.GameState.Paused) { return; }
         if (showingUpgradeInfo) { return; }
         if (placed)
         {
@@ -309,8 +337,15 @@ public class Tower : PooledObject
         }
     }
 
+
     private void OnMouseOver()
     {
+        MouseOver();
+    }
+
+    public virtual void MouseOver()
+    {
+        if (GameManager.instance.gameState == GameManager.GameState.Paused) { return; }
         if (showingUpgradeInfo) { return; }
         if (placed)
         {
@@ -320,6 +355,11 @@ public class Tower : PooledObject
     }
 
     private void OnMouseExit()
+    {
+        MouseExit();
+    }
+
+    public virtual void MouseExit()
     {
         if (showingUpgradeInfo) { return; }
         if (placed)

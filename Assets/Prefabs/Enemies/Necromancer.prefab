@@ -769,6 +769,7 @@ MonoBehaviour:
   deathPoofSFX: {fileID: 8300000, guid: 6c588741791c04842bac3c96482d9082, type: 3}
   hitTowerSFX: {fileID: 8300000, guid: 80e94465d2204da4191a0e26a20d3b11, type: 3}
   takeDamageSFX: {fileID: 8300000, guid: 661cdc558ba987a4db60eb15a2c6d4b3, type: 3}
+  nearbyBuffers: []
 --- !u!136 &3250476294774289877
 CapsuleCollider:
   m_ObjectHideFlags: 0

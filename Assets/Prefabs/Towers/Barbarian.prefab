@@ -320,7 +320,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3d5ab731e057da74fad2998d18e6d4c9, type: 2}
+  - {fileID: 2100000, guid: 07d6917bf5a9e714f935a60eed5ee5ba, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1536,7 +1536,7 @@ MonoBehaviour:
     fireRateUpgrade: 0
     rangeUpgrade: 0
     piercing: 0
-    UpgradeCost: 250
+    UpgradeCost: 300
     uniqueUpgrade: 0
     switchWeaponModel: 0
   - upgradeText: Double spin on 3rd attack
@@ -1544,7 +1544,7 @@ MonoBehaviour:
     fireRateUpgrade: 0
     rangeUpgrade: 0
     piercing: 0
-    UpgradeCost: 350
+    UpgradeCost: 450
     uniqueUpgrade: 1
     switchWeaponModel: 1
   startDamage: 15
@@ -1560,7 +1560,7 @@ MonoBehaviour:
   placed: 0
   radiusObject: {fileID: 766103744746596774}
   radiusMats:
-  - {fileID: 2100000, guid: 3d5ab731e057da74fad2998d18e6d4c9, type: 2}
+  - {fileID: 2100000, guid: 07d6917bf5a9e714f935a60eed5ee5ba, type: 2}
   - {fileID: 2100000, guid: 75e4265d18669ff4e967baa3cc7e5218, type: 2}
   hoverText: {fileID: 3113667017254992235}
   showingUpgradeInfo: 0

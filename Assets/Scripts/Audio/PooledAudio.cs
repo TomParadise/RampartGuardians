@@ -13,7 +13,7 @@ public class PooledAudio : PooledObject
     {
         while (timer > 0)
         {
-            while (GameManager.instance.gameState == GameManager.GameState.Paused) { yield return null; }
+            //while (GameManager.instance.gameState == GameManager.GameState.Paused) { yield return null; }
 
             timer -= Time.deltaTime;
             yield return null;

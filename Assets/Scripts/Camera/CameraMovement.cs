@@ -11,8 +11,8 @@ public class CameraMovement : MonoBehaviour
     public Vector2 mapMaximums;
     private Vector3 prevMousePos;
     private Vector3 mouseDownPos;
-    public float rotSpeed = 5;
-    public float moveSpeed = 5;
+    public float rotSpeed = 3;
+    public float moveSpeed = 3;
     public float zoomSpeed = 500;
     public bool holdingTower = false;
     [SerializeField] private Image[] mouseIcons;
@@ -47,6 +47,7 @@ public class CameraMovement : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.instance.gameState == GameManager.GameState.Paused) { return; }
         if (!holdingTower || !canMove) { return; }
         Vector2 mousePos = Input.mousePosition;
         Vector3 forward = Quaternion.Euler(0, cam.transform.eulerAngles.y, 0) * Vector3.forward;
@@ -139,6 +140,7 @@ public class CameraMovement : MonoBehaviour
 
     public void OnPointerDrag(BaseEventData bed)
     {
+        if (GameManager.instance.gameState == GameManager.GameState.Paused) { return; }
         if (!canMove) { return; }
 
         PointerEventData ped = (PointerEventData)bed;
@@ -147,8 +149,8 @@ public class CameraMovement : MonoBehaviour
         {
             Vector3 forward = Quaternion.Euler(0, cam.transform.eulerAngles.y, 0) * Vector3.forward;
             Vector3 right = cam.transform.right;
-            cam.transform.position += forward * (prevMousePos.y - Input.mousePosition.y) * Time.deltaTime * moveSpeed;
-            cam.transform.position += right * (prevMousePos.x - Input.mousePosition.x) * Time.deltaTime * moveSpeed;
+            cam.transform.position += forward * (prevMousePos.y - Input.mousePosition.y) * Time.deltaTime * Mathf.Lerp(1.5f, 5.7f, (cam.transform.position.y - 4f) / 10f) * moveSpeed * (1f / (Screen.height / 874f));
+            cam.transform.position += right * (prevMousePos.x - Input.mousePosition.x) * Time.deltaTime * Mathf.Lerp(1.5f, 5.7f, (cam.transform.position.y - 4f) / 10f) * moveSpeed * (1f / (Screen.width / 1554f));
             ClampPos();
             prevMousePos = Input.mousePosition;
         }

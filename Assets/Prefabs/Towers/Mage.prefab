@@ -474,7 +474,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3d5ab731e057da74fad2998d18e6d4c9, type: 2}
+  - {fileID: 2100000, guid: 07d6917bf5a9e714f935a60eed5ee5ba, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2955,7 +2955,7 @@ MonoBehaviour:
   placed: 0
   radiusObject: {fileID: 4937317831273019983}
   radiusMats:
-  - {fileID: 2100000, guid: 3d5ab731e057da74fad2998d18e6d4c9, type: 2}
+  - {fileID: 2100000, guid: 07d6917bf5a9e714f935a60eed5ee5ba, type: 2}
   - {fileID: 2100000, guid: 75e4265d18669ff4e967baa3cc7e5218, type: 2}
   hoverText: {fileID: 4935869669196186196}
   showingUpgradeInfo: 0

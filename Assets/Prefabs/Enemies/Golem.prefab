@@ -192,6 +192,7 @@ MonoBehaviour:
   deathPoofSFX: {fileID: 8300000, guid: 6c588741791c04842bac3c96482d9082, type: 3}
   hitTowerSFX: {fileID: 8300000, guid: 80e94465d2204da4191a0e26a20d3b11, type: 3}
   takeDamageSFX: {fileID: 8300000, guid: 661cdc558ba987a4db60eb15a2c6d4b3, type: 3}
+  nearbyBuffers: []
 --- !u!95 &1211484629728264258
 Animator:
   serializedVersion: 7
@@ -324,6 +325,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 87aeeb31484a080479369232bef1c9c6, type: 3}
       propertyPath: m_Name
       value: Skeleton_Mace
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 87aeeb31484a080479369232bef1c9c6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

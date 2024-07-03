@@ -5,6 +5,7 @@ using UnityEngine;
 public class TempTile
 {
     public bool isOccupied = false;
+    public bool previouslyLockedIn = false;
     public TempTile parentTile;
     public int costFromStart;
     public int costToEnd;

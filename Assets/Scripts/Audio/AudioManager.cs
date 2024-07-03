@@ -13,6 +13,8 @@ public class AudioManager : MonoSingleton<AudioManager>
     [SerializeField] private AudioClip[] planningMusicClips;
     [SerializeField] private AudioClip[] buttonClips;
     [SerializeField] private AudioClip notEnoughGoldClip;
+    [SerializeField] private AudioClip victoryMusic;
+    [SerializeField] private AudioClip defeatMusic;
     [SerializeField] private GameObject sfxPrefab;
     private ObjectPool<PooledObject> tempSFXPool;
     private List<AudioSource> dynamicAudioSources = new List<AudioSource>();
@@ -114,7 +116,7 @@ public class AudioManager : MonoSingleton<AudioManager>
         {
             planningMusicSource.volume = 1;
             planningMusicSource.loop = false;
-            //musicSource.clip = musicClips[(int)newState];
+            planningMusicSource.clip = newState == MusicState.Defeat ? defeatMusic : victoryMusic;
             planningMusicSource.Play();
         }
         else
@@ -131,6 +133,7 @@ public class AudioManager : MonoSingleton<AudioManager>
             else
             {
                 if (newSource.clip != newMusic) { newSource.clip = newMusic; }
+                newSource.loop = true;
                 newSource.Play();
                 prevSource.Pause();
             }

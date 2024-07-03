@@ -12,11 +12,27 @@ public class WaveCompletedPanel : MonoBehaviour
     [SerializeField] private Image panelImage;
     [SerializeField] private Sprite[] animSprites;
     [SerializeField] private Color textCol;
+    private Coroutine wavePopupCo = null;
+
+    public void ForceStopCo()
+    {
+        if (wavePopupCo != null) 
+        {
+            StopCoroutine(wavePopupCo);
+            panelImage.sprite = animSprites[animSprites.Length - 1];
+            Color clearCol = textCol;
+            clearCol.a = 0;
+            waveText.color = clearCol;
+            descriptionText.color = clearCol;
+        }
+    }
+
     public void Init(int wave, int reward)
     {
+        if(wavePopupCo != null) { StopCoroutine(wavePopupCo); }
         waveText.text = "Wave " + wave.ToString() + " complete";
         descriptionText.text = "Reward: +" + reward.ToString() + " gold";
-        StartCoroutine(LerpAnimation());
+        wavePopupCo = StartCoroutine(LerpAnimation());
     }
 
     private IEnumerator LerpAnimation()
@@ -71,5 +87,6 @@ public class WaveCompletedPanel : MonoBehaviour
             }
         }
         UIManager.EnableStartWaveButton();
+        wavePopupCo = null;
     }
 }

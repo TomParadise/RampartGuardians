@@ -32,6 +32,11 @@ public class TowerLevelUpPanel : MonoBehaviour
     private Camera mainCam;
     private CapsuleCollider towerCol;
 
+    private void Start()
+    {
+        transform.SetSiblingIndex(transform.parent.childCount - 5);
+    }
+
     public void SetPosition()
     {
         Vector2 screenPos = mainCam.WorldToScreenPoint(towerCol.bounds.center + Vector3.up * towerCol.height * 0.55f * selectedTower.transform.lossyScale.y);

@@ -280,6 +280,12 @@ public class Enemy : PooledObject
         //Release();
     }
 
+    public void ForceRelease()
+    {
+        if (!alive || !gameObject.activeInHierarchy) { return; }
+        base.Release();
+    }
+
     public override void Release()
     {
         GameObject effect = GameManager.instance.GetEffect(3);

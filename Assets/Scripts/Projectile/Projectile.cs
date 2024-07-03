@@ -95,6 +95,13 @@ public class Projectile : PooledObject
         Release();
     }
 
+    public void ForceRelease()
+    {
+        if (!alive || !gameObject.activeInHierarchy) { return; }
+        alive = false;
+        Release();
+    }
+
     public override void ResetObject()
     {
         hitbox.enabled = true;
