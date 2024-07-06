@@ -114,9 +114,18 @@ public class AudioManager : MonoSingleton<AudioManager>
         if (newState == MusicState.Defeat ||
             newState == MusicState.Victory)
         {
+            battleMusicSource.Pause();
             planningMusicSource.volume = 1;
-            planningMusicSource.loop = false;
-            planningMusicSource.clip = newState == MusicState.Defeat ? defeatMusic : victoryMusic;
+            if(newState == MusicState.Victory)
+            {
+                planningMusicSource.loop = true;
+                planningMusicSource.clip = victoryMusic;
+            }
+            else
+            {
+                planningMusicSource.loop = false;
+                planningMusicSource.clip = defeatMusic;
+            }
             planningMusicSource.Play();
         }
         else
@@ -135,6 +144,7 @@ public class AudioManager : MonoSingleton<AudioManager>
                 if (newSource.clip != newMusic) { newSource.clip = newMusic; }
                 newSource.loop = true;
                 newSource.Play();
+                newSource.volume = 1;
                 prevSource.Pause();
             }
         }

@@ -199,7 +199,7 @@ public class TowerLevelUpPanel : MonoBehaviour
             AudioManager.instance.PlayNotEnoughGoldSFX();
             return;
         }
-        GameManager.instance.GivePlayerGold(-upgradeCost);
+        GameManager.instance.GivePlayerGold(-upgradeCost, false);
         selectedTower.UpgradeTower();
         
         //update upgrade info and stats

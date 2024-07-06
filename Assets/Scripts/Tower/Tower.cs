@@ -216,7 +216,7 @@ public class Tower : PooledObject
     {
         float value = (float)goldValue * (0.70f + (Mathf.Min(6, roundsActive) * 0.05f));
         if(roundsActive == -1) { value = goldValue; }
-        GameManager.instance.GivePlayerGold(Mathf.FloorToInt(value));
+        GameManager.instance.GivePlayerGold(Mathf.FloorToInt(value), false);
         towerPositioner.OnTowerSold();
         GameManager.instance.towers.Remove(this);
         Release();
@@ -279,6 +279,10 @@ public class Tower : PooledObject
         piercingProjectiles = basePiercingProjectiles;
         roundsActive = -1;
         towerButton = null;
+        if (animator != null)
+        {
+            animator.speed = 1;
+        }
         base.ResetObject();
     }
 
@@ -327,7 +331,7 @@ public class Tower : PooledObject
 
     public virtual void MouseUp()
     {
-        if (GameManager.instance.gameState == GameManager.GameState.Paused) { return; }
+        if (!GameManager.instance.GetIsGamePlayingOrPlanning()) { return; }
         if (showingUpgradeInfo) { return; }
         if (placed)
         {
@@ -345,7 +349,7 @@ public class Tower : PooledObject
 
     public virtual void MouseOver()
     {
-        if (GameManager.instance.gameState == GameManager.GameState.Paused) { return; }
+        if (!GameManager.instance.GetIsGamePlayingOrPlanning()) { return; }
         if (showingUpgradeInfo) { return; }
         if (placed)
         {
@@ -361,6 +365,7 @@ public class Tower : PooledObject
 
     public virtual void MouseExit()
     {
+        if (!GameManager.instance.GetIsGamePlayingOrPlanning()) { return; }
         if (showingUpgradeInfo) { return; }
         if (placed)
         {

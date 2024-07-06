@@ -3617,22 +3617,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - eventID: 5
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 381336929}
-          m_TargetAssemblyTypeName: CameraMovement, Assembly-CSharp
-          m_MethodName: OnPointerDrag
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
   - eventID: 7
     callback:
       m_PersistentCalls:
@@ -5906,8 +5890,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: cad11a4481c77fe4aabeb5563cb0bd6c, type: 3}
   - {fileID: 8300000, guid: f86684ac4f9d3104f8b340c597107228, type: 3}
   notEnoughGoldClip: {fileID: 8300000, guid: d8d04c6f80a1140db85ede568dab1f51, type: 3}
-  victoryMusic: {fileID: 0}
-  defeatMusic: {fileID: 0}
+  victoryMusic: {fileID: 8300000, guid: f940a696e92c9894191a9586085132e9, type: 3}
+  defeatMusic: {fileID: 8300000, guid: a78303900de031545bfe54fdf32f9c69, type: 3}
   sfxPrefab: {fileID: 8118180865015391766, guid: eddb20db3ef39d04081216a40b46f4e4, type: 3}
   masterVolume: 1
   sfxVolume: 1

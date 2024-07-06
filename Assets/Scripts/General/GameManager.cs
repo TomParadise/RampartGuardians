@@ -169,23 +169,23 @@ public class GameManager : MonoSingleton<GameManager>
     // Update is called once per frame
     void Update()
     {
-        if (Application.isEditor)
-        {
-            //if (Input.GetKeyDown(KeyCode.V))
-            //{
-            //    //LevelGeneration.instance.ExpandMap(100);
-            //    OnVictory();
-            //}
-            //if (Input.GetKeyDown(KeyCode.D))
-            //{
-            //    //LevelGeneration.instance.ExpandMap(100);
-            //    OnDefeat();
-            //}
-            if (Input.GetKeyDown(KeyCode.N))
-            {
-                StopStage();
-            }
-        }
+        //if (Application.isEditor)
+        //{
+        //    //if (Input.GetKeyDown(KeyCode.V))
+        //    //{
+        //    //    //LevelGeneration.instance.ExpandMap(100);
+        //    //    OnVictory();
+        //    //}
+        //    //if (Input.GetKeyDown(KeyCode.D))
+        //    //{
+        //    //    //LevelGeneration.instance.ExpandMap(100);
+        //    //    OnDefeat();
+        //    //}
+        //    if (Input.GetKeyDown(KeyCode.N))
+        //    {
+        //        StopStage();
+        //    }
+        //}
         if (Input.GetKeyDown(KeyCode.Escape)) 
         {
             //LevelGeneration.instance.ExpandMap(100);
@@ -408,9 +408,12 @@ public class GameManager : MonoSingleton<GameManager>
         return gameState == GameState.Playing || gameState == GameState.Planning;
     }
 
-    public void GivePlayerGold(int goldValue)
+    public void GivePlayerGold(int goldValue, bool earned = true)
     {
-        totalGoldEarned += goldValue;
+        if(earned)
+        {
+            totalGoldEarned += goldValue;
+        }
 
         playerGold += goldValue;
         UIManager.SetGold(playerGold);
@@ -430,6 +433,7 @@ public class GameManager : MonoSingleton<GameManager>
 
         enemies.Remove(enemy);
         playerGold += goldValue;
+        totalGoldEarned += goldValue;
         UIManager.SetGold(playerGold);
         enemyCount--;
         GoldEarnedPopUp popUp = goldPopUpPool.Get().GetComponent<GoldEarnedPopUp>();
@@ -488,7 +492,6 @@ public class GameManager : MonoSingleton<GameManager>
                 if (i % 5 == 0) { reward += 5; }
             }
         }
-        UIManager.DisplayWaveCompleteInfo(waveCounter, reward);
         GivePlayerGold(reward);
         waveCounter++;
         string waveText = "Wave: " + waveCounter.ToString();
@@ -513,6 +516,10 @@ public class GameManager : MonoSingleton<GameManager>
         {
             OnVictory();
         }
+        else
+        {
+            UIManager.DisplayWaveCompleteInfo(waveCounter, reward);
+        }
     }
 
     public void ReleaseAllProjectiles()
@@ -532,7 +539,7 @@ public class GameManager : MonoSingleton<GameManager>
         for (int i = enemyCount - 1; i >= 0; i--)
         {
             Enemy enemy = enemyHolder.GetChild(i).GetComponent<Enemy>();
-            if (enemy == null) { continue; }
+            if (enemy == null || !enemy.gameObject.activeInHierarchy) { continue; }
             enemy.ForceRelease();
         }
     }
@@ -547,10 +554,10 @@ public class GameManager : MonoSingleton<GameManager>
         {
             tower.TogglePause(true);
         }
-        foreach (Enemy enemy in enemies)
-        {
-            enemy.TogglePause(true);
-        }
+        //foreach (Enemy enemy in enemies)
+        //{
+        //    enemy.TogglePause(true);
+        //}
 
         victoryFireworksCo = StartCoroutine(VictoryCo());
     }
@@ -679,7 +686,7 @@ public class GameManager : MonoSingleton<GameManager>
         castleTile.transform.GetChild(1).gameObject.SetActive(false);
         castleTile.transform.GetChild(2).gameObject.SetActive(true);
 
-        timer = 2f;
+        timer = 3f;
         while (timer > 0)
         {
             while (gameState == GameState.Paused) { yield return null; }

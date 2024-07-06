@@ -20,6 +20,8 @@ public class CameraMovement : MonoBehaviour
     private Coroutine scrollIconCo = null;
 
     public bool canMove = true;
+    private bool leftDown = false;
+    private bool rightDown = false;
 
     public void ResetPos()
     {
@@ -48,7 +50,9 @@ public class CameraMovement : MonoBehaviour
     private void Update()
     {
         if (GameManager.instance.gameState == GameManager.GameState.Paused) { return; }
-        if (!holdingTower || !canMove) { return; }
+        if (!canMove) { return; }
+        Drag();
+        if (!holdingTower) { return; }
         Vector2 mousePos = Input.mousePosition;
         Vector3 forward = Quaternion.Euler(0, cam.transform.eulerAngles.y, 0) * Vector3.forward;
         Vector3 right = cam.transform.right;
@@ -69,6 +73,27 @@ public class CameraMovement : MonoBehaviour
             cam.transform.position += forward * Time.deltaTime * moveSpeed * 2;
         }
         ClampPos();
+    }
+
+    public void Drag()
+    {
+        //left button moves the camera
+        if (leftDown)
+        {
+            Vector3 forward = Quaternion.Euler(0, cam.transform.eulerAngles.y, 0) * Vector3.forward;
+            Vector3 right = cam.transform.right;
+            cam.transform.position += forward * (prevMousePos.y - Input.mousePosition.y) * Time.deltaTime * Mathf.Lerp(1.5f, 5.7f, (cam.transform.position.y - 4f) / 10f) * moveSpeed * (1f / (Screen.height / 874f));
+            cam.transform.position += right * (prevMousePos.x - Input.mousePosition.x) * Time.deltaTime * Mathf.Lerp(1.5f, 5.7f, (cam.transform.position.y - 4f) / 10f) * moveSpeed * (1f / (Screen.width / 1554f));
+            ClampPos();
+            prevMousePos = Input.mousePosition;
+        }
+        //right button rotates the camera
+        else if (rightDown)
+        {
+            cam.transform.RotateAround(mouseDownPos, Vector3.up, (prevMousePos.x - Input.mousePosition.x) * Time.deltaTime * rotSpeed);
+            prevMousePos = Input.mousePosition;
+            ClampPos();
+        }
     }
 
     private void ClampPos()
@@ -96,6 +121,7 @@ public class CameraMovement : MonoBehaviour
             Color col = Color.white;
             col.a = 0.6f;
             mouseIcons[0].color = col;
+            leftDown = false;
         }
         //right button rotates the camera
         else if (ped.pointerId == -2)
@@ -103,6 +129,7 @@ public class CameraMovement : MonoBehaviour
             Color col = Color.white;
             col.a = 0.6f;
             mouseIcons[2].color = col;
+            rightDown = false;
         }
     }
 
@@ -118,6 +145,7 @@ public class CameraMovement : MonoBehaviour
             Color col = Color.white;
             col.a = 1f;
             mouseIcons[0].color = col;
+            leftDown = true;
         }
         //right mouse button
         else if (ped.pointerId == -2)
@@ -135,32 +163,12 @@ public class CameraMovement : MonoBehaviour
             Color col = Color.white;
             col.a = 1f;
             mouseIcons[2].color = col;
+            rightDown = true;
         }
     }
 
     public void OnPointerDrag(BaseEventData bed)
     {
-        if (GameManager.instance.gameState == GameManager.GameState.Paused) { return; }
-        if (!canMove) { return; }
-
-        PointerEventData ped = (PointerEventData)bed;
-        //left button moves the camera
-        if (ped.pointerId == -1)
-        {
-            Vector3 forward = Quaternion.Euler(0, cam.transform.eulerAngles.y, 0) * Vector3.forward;
-            Vector3 right = cam.transform.right;
-            cam.transform.position += forward * (prevMousePos.y - Input.mousePosition.y) * Time.deltaTime * Mathf.Lerp(1.5f, 5.7f, (cam.transform.position.y - 4f) / 10f) * moveSpeed * (1f / (Screen.height / 874f));
-            cam.transform.position += right * (prevMousePos.x - Input.mousePosition.x) * Time.deltaTime * Mathf.Lerp(1.5f, 5.7f, (cam.transform.position.y - 4f) / 10f) * moveSpeed * (1f / (Screen.width / 1554f));
-            ClampPos();
-            prevMousePos = Input.mousePosition;
-        }
-        //right button rotates the camera
-        else if (ped.pointerId == -2)
-        {
-            cam.transform.RotateAround(mouseDownPos, Vector3.up, (prevMousePos.x - Input.mousePosition.x) * Time.deltaTime * rotSpeed);
-            prevMousePos = Input.mousePosition;
-            ClampPos();
-        }
     }
 
     public void OnScroll(BaseEventData bed)

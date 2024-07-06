@@ -105,7 +105,7 @@ public class MeleeTower : AttackingTower
                     }
                 }
                 GameObject impact = GameManager.instance.GetEffect(2);
-                impact.transform.position = transform.position + attackPoints[i];
+                impact.transform.position = transform.position + attackPoints[i] + Vector3.up * 0.25f;
                 impact.SetActive(true);
             }
             hitCols.Clear();

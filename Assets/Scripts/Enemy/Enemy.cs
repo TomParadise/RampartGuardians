@@ -51,6 +51,7 @@ public class Enemy : PooledObject
 
     public override void ResetObject()
     {
+        animator.speed = 1;
         currentHP = maxHP;
         showingHP = false;
         clickedOn = false;
@@ -121,7 +122,7 @@ public class Enemy : PooledObject
 
     private IEnumerator SlowDownCo(float duration)
     {
-        if (slowEffect != null)
+        if (slowEffect == null)
         {
             slowEffect = GameManager.instance.GetEffect(7).GetComponent<PooledObject>();
             slowEffect.transform.SetParent(transform);
@@ -266,6 +267,7 @@ public class Enemy : PooledObject
         }
         GameManager.instance.EnemyKilled(this, goldReward, popupHolder.transform.position);
         alive = false;
+        walking = false;
         hitbox.enabled = false;
         animator.Play("Death");
         if (slowCo != null) { StopCoroutine(slowCo); }
@@ -282,7 +284,7 @@ public class Enemy : PooledObject
 
     public void ForceRelease()
     {
-        if (!alive || !gameObject.activeInHierarchy) { return; }
+        if (!walking && (!alive || !gameObject.activeInHierarchy)) { return; }
         base.Release();
     }
 
@@ -310,6 +312,7 @@ public class Enemy : PooledObject
 
     private void OnMouseEnter()
     {
+        if(GameManager.instance.gameState != GameManager.GameState.Playing) { return; }
         showingHP = true;
         GameManager.instance.GetUIManager().ShowEnemyHPDisplay(portraitSprite, (int)currentHP, (int)maxHP, damage, enemyName, this, armoured);
     }
@@ -321,6 +324,7 @@ public class Enemy : PooledObject
 
     private void OnMouseExit()
     {
+        if (GameManager.instance.gameState != GameManager.GameState.Playing) { return; }
         if (clickedOn) { return; }
         showingHP = false;
         GameManager.instance.GetUIManager().HideEnemyHPDisplay();

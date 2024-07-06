@@ -533,6 +533,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: aae38702f0246c14eaf9daffd3e475c1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -633,6 +637,7 @@ MonoBehaviour:
   snapTowerSFX: {fileID: 8300000, guid: 625ad317b451ec147984e94636d712a6, type: 3}
   infoPopUpSFX: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
   roundsActive: 0
+  towerButton: {fileID: 0}
   sphereCol: {fileID: 70859445317228171}
   buffingAoE: {fileID: 8390665365848063609}
 --- !u!136 &688166277363669697
@@ -657,7 +662,7 @@ CapsuleCollider:
   m_Radius: 0.2
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0, y: 0.5, z: -0.2}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!4 &7546172644231734963 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: aae38702f0246c14eaf9daffd3e475c1, type: 3}
